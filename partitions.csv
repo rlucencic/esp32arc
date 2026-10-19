@@ -1,0 +1,8 @@
+# Name,         Type, SubType, Offset,   Size
+nvs,            data, nvs,     0x9000,   0x6000
+phy_init,       data, phy,     0xf000,   0x1000
+factory,        app,  factory, 0x10000,  8M
+rom_arthur120,  data, 0x40,    0x810000, 512K
+rom_riscos200,  data, 0x40,    0x890000, 512K
+rom_riscos311,  data, 0x40,    0x910000, 2M
+storage,        data, fat,     0xB10000, 0x4F0000
