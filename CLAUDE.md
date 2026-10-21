@@ -61,10 +61,12 @@ Touches on the Tab5: the picture is 960x720 at x=160, so a machine pixel
 (x, y) of a w x h mode is `t 160+x*960/w y*720/h`. In the 640x256 desktops
 the icon bar's :1 is `t 208 664`, :0 `t 290 664`, Apps `t 358 664`; a
 touch of 120 ms is a Select click, 900 ms a Menu click. Setup screen: Start
-`t 1065 637`, Model `t 433|788 229` (A440, A3020), then System (y 291),
-Memory (y 353) and Menu button (y 415, `t 433|788`): for the A3020 System
-`t 348 291` and Memory `t 433|788 353`; the A440's three and four buttons
-are on the same lines (an `lcd` shot gives their x). The corner long-press
+`t 1065 637`, Model `t 433|788 227` (A440, A3020), then System (y 298),
+Memory (y 369) and Menu button (y 440, `t 433|788`): for the A3020 System
+`t 348 298` and Memory `t 433|788 369`; the A440's three and four buttons
+are on the same lines (an `lcd` shot gives their x). (Since the shared
+setup screen's rows scroll, 2026-10-21: the Amiga's first four rows,
+measured there; before, 229, 291, 353, 415.) The corner long-press
 `t 1270 10 2500`. The status lines show the WiFi name and IP: keep them
 out of published images.
 
