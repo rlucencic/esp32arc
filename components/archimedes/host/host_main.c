@@ -15,7 +15,8 @@
  *                              mouse <dx> <dy>, buttons <b> (1 Select,
  *                              2 Menu, 4 Adjust), pointer <x> <y> <b>,
  *                              shot <file.ppm>, insert <0|1> <path>,
- *                              eject <0|1>, reset, status, regs,
+ *                              eject <0|1>, reset, status (with the discs'
+ *                              free space as the web page has it), regs,
  *                              where (the pointer on the picture),
  *                              peek <hex>, dump <hex> <n>, dis <hex> <n>
  *   ARC_WAV=<file>           write the sound
@@ -29,6 +30,8 @@
  *                            commands, the MEMC's CAM writes
  *   ARC_DEBUG=<port>         serve the debugger (esp32emu's docs/debugger.md) on
  *                            127.0.0.1:<port> and run in real time until killed
+ *
+ * At the end, each disc's free space: ":0 N bytes free of M".
  */
 #include <ctype.h>
 #include <stdint.h>
@@ -117,6 +120,14 @@ static void print_status(uint32_t frame)
            frame, (unsigned)s.pc, (unsigned)s.insns, s.width, s.height, s.bpp, s.hz100 / 100, s.hz100 % 100,
            s.dma_percent, s.sound_on ? "on" : "off", (unsigned)s.sample_rate, ioc.irqa, ioc.irqa_mask, ioc.irqb,
            ioc.irqb_mask, ioc.fiq, ioc.fiq_mask, (unsigned)memc.control);
+    /* the discs' free space as the web page has it */
+    for (int d = 0; d <= ARC_FLOPPIES; d++) {
+        uint64_t free_bytes, size;
+        if (arc_disc_space(d, &free_bytes, &size)) {
+            printf("host: frame %u %s %llu bytes free of %llu\n", frame, d == 0 ? ":0" : d == 1 ? ":1" : "IDE",
+                   (unsigned long long)free_bytes, (unsigned long long)size);
+        }
+    }
 }
 
 /* ---- Script ---- */
@@ -578,6 +589,13 @@ int main(int argc, char **argv)
     }
     arc_floppy_flush();
     arc_hd_flush();
+    for (int d = 0; d <= ARC_FLOPPIES; d++) {
+        uint64_t free_bytes, size;
+        if (space_count(d, &free_bytes, &size)) {
+            printf("host: %s %llu bytes free of %llu\n", d == 0 ? ":0" : d == 1 ? ":1" : "IDE",
+                   (unsigned long long)free_bytes, (unsigned long long)size);
+        }
+    }
     save_cmos();
     mix_print();
     if (wav) {

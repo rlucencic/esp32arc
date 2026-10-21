@@ -85,6 +85,7 @@ bool arc_hd_insert(const char *path)
     geometry_from_image();
     ide.sectors = (uint32_t)((size - (long)ide.skip) / 512);
     ARC_LOG("IDE: %s, %u sectors, %d heads of %d", path, (unsigned)ide.sectors, ide.def_heads, ide.def_spt);
+    space_forget(ARC_FLOPPIES);
     return true;
 }
 
@@ -96,6 +97,16 @@ void arc_hd_eject(void)
     }
     ide.path[0] = 0;
     ide.dirty = false;
+    space_forget(ARC_FLOPPIES);
+}
+
+bool ide_image_read(uint64_t offset, void *buf, uint32_t len)
+{
+    uint64_t size = (uint64_t)ide.sectors * 512;
+    if (!ide.f || offset > size || len > size - offset) {
+        return false;
+    }
+    return fseek(ide.f, (long)(ide.skip + offset), SEEK_SET) == 0 && fread(buf, 1, len, ide.f) == len;
 }
 
 const char *arc_hd_path(void)

@@ -2,18 +2,21 @@
 #   build/arc_host <rom> [frames] [out.ppm] [ram_kb]   (see host_main.c)
 ARM2      := ../../../../esp32emu/components/arm2
 EMUDBG    := ../../../../esp32emu/components/emudbg
+DISKSPACE := ../../../../esp32emu/components/diskspace
 ARC       := ..
 BUILD     := build
 CFLAGS    := -O2 -g -Wall -Wextra -Wno-unused-parameter -DARM2_HOST_HOOK \
-             -I$(ARC)/include -I$(ARC) -I$(ARM2)/include -I$(EMUDBG)/include
+             -I$(ARC)/include -I$(ARC) -I$(ARM2)/include -I$(EMUDBG)/include \
+             -I$(DISKSPACE)/include
 
 ARC_SRCS  := $(wildcard $(ARC)/*.c)
 ARM2_SRCS := $(ARM2)/arm2.c $(ARM2)/arm2_dis.c $(ARM2)/arm2_dbg.c
 ARC_OBJS  := $(patsubst $(ARC)/%.c,$(BUILD)/arc/%.o,$(ARC_SRCS))
 ARM2_OBJS := $(patsubst $(ARM2)/%.c,$(BUILD)/arm2/%.o,$(ARM2_SRCS)) \
              $(BUILD)/emudbg.o $(BUILD)/emudbg_posix.o
+DISK_OBJS := $(patsubst $(DISKSPACE)/%.c,$(BUILD)/diskspace/%.o,$(wildcard $(DISKSPACE)/*.c))
 
-$(BUILD)/arc_host: host_main.c $(ARC_OBJS) $(ARM2_OBJS)
+$(BUILD)/arc_host: host_main.c $(ARC_OBJS) $(ARM2_OBJS) $(DISK_OBJS)
 	$(CC) $(CFLAGS) $^ -lm -lpthread -o $@
 
 $(BUILD)/arc/%.o: $(ARC)/%.c $(wildcard $(ARC)/*.h $(ARC)/include/*.h) $(ARM2)/include/arm2.h
@@ -21,6 +24,10 @@ $(BUILD)/arc/%.o: $(ARC)/%.c $(wildcard $(ARC)/*.h $(ARC)/include/*.h) $(ARM2)/i
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(BUILD)/arm2/%.o: $(ARM2)/%.c $(ARM2)/include/arm2.h $(EMUDBG)/include/emudbg.h
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BUILD)/diskspace/%.o: $(DISKSPACE)/%.c $(DISKSPACE)/include/diskspace.h
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 

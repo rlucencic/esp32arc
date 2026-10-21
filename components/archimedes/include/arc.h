@@ -141,6 +141,14 @@ typedef struct {
 
 void arc_floppy_status(arc_floppy_status_t *status);
 
+/* A disc's free space and size in bytes, as its filesystem counts them
+ * (ADFS old or new map; DOS FAT on floppies): drives 0 and 1, ARC_FLOPPIES
+ * the IDE disc. Worked out on the emulation's task once a second (when the
+ * disc went in, or a second after its last write); false while it isn't
+ * known (no disc, no filesystem known here, not worked out yet).
+ */
+bool arc_disc_space(int drive, uint64_t *free_bytes, uint64_t *size);
+
 /* ---- State ---- */
 
 typedef struct {

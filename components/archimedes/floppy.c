@@ -124,6 +124,7 @@ bool arc_floppy_insert(int drive, const char *path)
     d->any_dirty = false;
     ARC_LOG("drive %d: %s, %d tracks, %d side%s, %d x %d%s", drive, path, d->tracks, d->sides,
             d->sides > 1 ? "s" : "", d->spt, d->ssize, ro ? ", read only" : "");
+    space_forget(drive);
     return true;
 }
 
@@ -160,6 +161,7 @@ void arc_floppy_eject(int drive)
     d->data = NULL;
     d->path[0] = 0;
     d->changed = true;
+    space_forget(drive);
 }
 
 const char *arc_floppy_path(int drive)

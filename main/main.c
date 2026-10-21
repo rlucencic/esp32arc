@@ -597,8 +597,10 @@ static void status(emu_json_t *j, int section)
     for (int d = 0; d < ARC_FLOPPIES; d++) {
         const char *name = disks_name(d);
         snprintf(text, sizeof(text), "track %u", (unsigned)fs.track[d]);
-        emu_json_drive(j, drive_names[d], name, arc_floppy_write_protected(d), fs.light == d, fs.reads[d],
-                       fs.writes[d], name ? text : NULL);
+        uint64_t free_bytes = 0, size = 0;
+        arc_disc_space(d, &free_bytes, &size);
+        emu_json_drive_space(j, drive_names[d], name, arc_floppy_write_protected(d), fs.light == d, fs.reads[d],
+                             fs.writes[d], name ? text : NULL, free_bytes, size);
     }
     {
         const char *name = disks_name(DRIVE_IDE);
@@ -607,7 +609,10 @@ static void status(emu_json_t *j, int section)
         arc_hd_status(&reads, &writes, &active);
         snprintf(text, sizeof(text), "%u MB%s", (unsigned)(arc_hd_size() >> 20),
                  s_cfg.model == ARC_MODEL_A3020 ? "" : " <span class=\"dim\">(the A3020's)</span>");
-        emu_json_drive(j, drive_names[DRIVE_IDE], name, false, active, reads, writes, name ? text : NULL);
+        uint64_t free_bytes = 0, size = 0;
+        arc_disc_space(DRIVE_IDE, &free_bytes, &size);
+        emu_json_drive_space(j, drive_names[DRIVE_IDE], name, false, active, reads, writes, name ? text : NULL,
+                             free_bytes, size);
     }
 }
 

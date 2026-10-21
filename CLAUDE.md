@@ -317,6 +317,11 @@ lessons).
   without stripes, the debugger (hello, pause, step, next, read,
   continue). Not checked by ear or hand: sound, Bluetooth and USB
   keyboards and mice, the Tab5 Keyboard.
+- **Free disk space** (web page, `space.c`): ADFS old and new map, DOS
+  FAT on floppies, counted on the emulation task when a disc goes in and a
+  second after its last write (a disc put in before Start: none until it
+  runs). Host: RISC OS 3.11's `*Free` on nine discs; Tab5 (2026-10-21):
+  RISC OS 2's Applications Disc 2: 327680 of 819200, a blank 40 MB IDE disc 41773056.
 
 ## Open items
 

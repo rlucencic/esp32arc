@@ -260,6 +260,7 @@ void arc_run_frame(void)
     s_frame_start = frame_end;
     arc.insns_last = arc.cpu.insns - insns;
     arc.frames++;
+    space_frame();
 }
 
 /* ---- The debugger ---- */

@@ -243,6 +243,17 @@ uint32_t ide_read(uint32_t port, bool byte);
 void ide_write(uint32_t port, uint16_t value, bool byte);
 uint64_t ide_next_event(void);
 void ide_event(void);
+/* len bytes of the disc at offset (after any header in front); the
+ * emulation's task only
+ */
+bool ide_image_read(uint64_t offset, void *buf, uint32_t len);
+
+/* ---- space.c: the discs' free space (drives 0, 1, ARC_FLOPPIES the IDE disc) ---- */
+
+void space_frame(void);                 /* each frame, from the frame loop */
+void space_forget(int drive);           /* a disc went in or out */
+/* Counted now from the image (where it's safe to read: the emulation's task) */
+bool space_count(int drive, uint64_t *free_bytes, uint64_t *size);
 
 /* ---- fdc.c: the A440's WD1772 and latches A and B ---- */
 
