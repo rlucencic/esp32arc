@@ -2,7 +2,7 @@
 
 <p align="center">
   <b>An Acorn Archimedes on an M5Stack Tab5.</b><br>
-  The A440 (ARM2 at 8 MHz) or the A3020 / A4000 (ARM250 at 12 MHz), MEMC, IOC and VIDC, up to 4 MB, Arthur 1.20, RISC OS 2.00 or RISC OS 3.11, two floppy drives and an IDE hard disc for disc images, Bluetooth keyboard and mouse, the touch screen as the mouse.
+  The A440 (ARM2 at 8 MHz) or the A3020 / A4000 (ARM250 at 12 MHz), MEMC, IOC and VIDC, up to 4 MB, Arthur 1.20, RISC OS 2.00 or RISC OS 3.11, two floppy drives and an IDE hard disc for disc images, Bluetooth keyboard and mouse, the touch screen as a touchpad.
 </p>
 
 <p align="center">
@@ -106,14 +106,15 @@ ARM2 core.
 - Discs changed while the machine runs are noticed, as on the real drive
 
 **Around it**
-- **Touch screen as mouse**: the pointer goes where you touch. A tap
-  clicks Select, holding still for half a second clicks Menu, and moving
-  while down drags with Select
 - **Setup screen** before the machine starts, and any time while it runs
   (hold the top-right corner for 2 seconds): WiFi, Bluetooth pairing, the
   model, OS, memory, the mouse's Menu button, discs, reset
 - **Bluetooth keyboard and mouse** (BLE HID), USB keyboards and mice on the
   Tab5's USB-A port, the Tab5 Keyboard
+- **The touch screen as a touchpad**, for when there's no mouse at hand
+  (a Bluetooth or USB mouse is the better way): drag a finger anywhere to
+  move the pointer, tap to click Select, tap and touch again for a Select
+  drag, hold still half a second for Menu
 - **Web page** at `http://archimedes.local`: drop disc images or `.ZIP` files
   onto it, put them into drives, eject, make blank discs, and watch the
   machine (screen mode, instructions a second, free memory, sound), the
@@ -131,7 +132,7 @@ An [M5Stack Tab5](https://docs.m5stack.com/en/core/Tab5):
 | Chip | ESP32-P4 (RISC-V, 360 MHz): 16 MB flash, 32 MB PSRAM; an ESP32-C6 for WiFi and Bluetooth |
 | Screen | 5" 1280×720 MIPI-DSI, capacitive touch, held landscape |
 | Storage | microSD card (FAT32 or exFAT) |
-| Input | any BLE keyboard and mouse, USB keyboards and mice, the touch screen, or the Tab5 Keyboard |
+| Input | any BLE keyboard and mouse, USB keyboards and mice, or the Tab5 Keyboard; the touch screen as a touchpad |
 | Sound | the built-in speaker (ES8388) |
 
 Every screen mode is shown at 4:3, 960×720 in the middle of the panel,
@@ -181,7 +182,7 @@ Tab5 is the only target: a build for any other stops with a message.
    choose **Insert into… → :0**. (Or copy them into the `floppies` folder
    of the SD card.)
 3. Tap **Bluetooth** to pair a keyboard and mouse (optional: the touch
-   screen is a mouse too).
+   screen is a touchpad too).
 4. Choose the **Model**, the **System** (OS) and **Memory**, then tap
    **Start**: the desktop comes up after the OS's own memory test, about
    20 seconds with RISC OS 3 and 4 MB.
@@ -198,7 +199,7 @@ Tab5 is the only target: a build for any other stops with a message.
 | Get back to the setup screen | Hold the top-right corner of the screen for 2 s |
 | Change the model, OS or memory | On the setup screen; **Restart** applies it |
 | Click Select, Menu, Adjust | Left button; right button (or the middle one: setup screen → **Menu button**); the other one |
-| ...on the touch screen | Tap for Select; hold still half a second for Menu; drag for a Select drag |
+| ...on the touch screen, a touchpad | Drag a finger anywhere to move the pointer; tap for Select; hold still half a second for Menu; tap and touch again for a Select drag |
 | Open a disc | Click its drive on the icon bar (:0 is the right-hand one) |
 | Insert a disc | Web page: **Insert into…**, or setup screen → **Discs** |
 | Make a blank disc | Web page: **New blank disk**, or setup screen → **Discs** → **New** |
@@ -241,7 +242,7 @@ flowchart LR
     PRES[Presenter<br>any mode → 960×720]
     UI[Setup screen<br>LVGL]
     NET[WiFi · web page · mDNS]
-    BLE[Bluetooth HID · touch]
+    BLE[Bluetooth HID · touchpad]
   end
   PSRAM[(PSRAM<br>RAM · ROM)]
   SD[(microSD<br>floppies/)]
@@ -261,7 +262,7 @@ flowchart LR
   (`components/archimedes/host`) for testing with scripted keys, mouse
   and pointer, screenshots, sound recording and traces.
 - **`main`**: the Archimedes on the board: memory, ROMs, settings and CMOS
-  RAM, keyboard map, mouse and touch, drives and status.
+  RAM, keyboard map, mouse and touchpad, drives and status.
 - **[esp32emu](https://github.com/rlucencic/esp32emu)**: the board runtime and
   the ARM2 core (`components/arm2`).
 
@@ -281,10 +282,10 @@ that frame is on the screen (a game drawing into two screens in turn
 clears the one just shown as soon as the next frame starts), and the
 presenter draws those copies.
 
-The touch screen steers the real mouse: each touch becomes mouse
-movements, sent over the keyboard's link as the Archimedes' mouse sends
-them, until the pointer (as the VIDC draws it) is where the finger is, so
-everything that reads the mouse, desktop or game, follows.
+The touch screen is a touchpad for the real mouse: a finger's moves
+become mouse movements, sent over the keyboard's link as the Archimedes'
+mouse sends them, so everything that reads the mouse, desktop or game,
+follows.
 
 ## Development
 
@@ -308,7 +309,7 @@ protocol, debugging options and the lessons learned along the way.
 ## Limitations
 
 - New. On the Tab5, all three OSes start and run their desktops in real
-  time on the A440, RISC OS 3.11 on the A3020; touch, floppies (reading,
+  time on the A440, RISC OS 3.11 on the A3020; floppies (reading,
   writing, blank discs), the A3020's IDE disc, the setup screen and the
   web page are checked. Not tried by hand yet: sound on the speaker, a
   Bluetooth or USB keyboard and mouse, the Tab5 Keyboard.

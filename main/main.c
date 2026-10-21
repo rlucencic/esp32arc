@@ -16,7 +16,6 @@
 #include "esp_heap_caps.h"
 #include "esp_log.h"
 #include "esp_memory_utils.h"
-#include "esp_timer.h"
 #include "emu/console.h"
 #include "emu/emu.h"
 #include "arc.h"
@@ -299,54 +298,27 @@ static void hid_mouse(int dx, int dy, uint8_t buttons)
     arc_mouse_buttons(arc_buttons(buttons));
 }
 
-/* A finger on the picture: the pointer goes there. A tap clicks Select,
- * holding still for half a second clicks Menu, moving while down drags
- * with Select (pressed where the finger went down)
+/* The touch screen as a touchpad (the runtime's): its moves in the
+ * picture's pixels to mouse counts the way RISC OS 3 moves the pointer out
+ * of the box, 3 OS units a count (its 640 x 256 modes: 1.5 pixels across,
+ * 0.75 down), a pixel 2 OS units or, in modes of up to 400 x 300, 4 on
+ * that axis. A tap clicks Select, the long press holds Menu.
  */
-#define TOUCH_MENU_US   500000
-#define TOUCH_SLOP      6               /* screen pixels before it's a drag */
-
-static void touch(int x, int y, bool pressed)
+static int touch_counts(int d, int *thirds, int size, int small)
 {
-    static enum { IDLE, PENDING, DRAG, DONE } state;
-    static int x0, y0;
-    static int64_t t0;
-    int64_t now = esp_timer_get_time();
-    if (!pressed) {
-        if (state == PENDING) {
-            arc_pointer(x0, y0, 1);
-            arc_pointer(x0, y0, 0);
-        } else if (state == DRAG) {
-            arc_pointer(x, y, 0);
-        }
-        state = IDLE;
-        return;
-    }
-    switch (state) {
-    case IDLE:
-        x0 = x;
-        y0 = y;
-        t0 = now;
-        arc_pointer(x, y, 0);
-        state = PENDING;
-        break;
-    case PENDING:
-        if (abs(x - x0) > TOUCH_SLOP || abs(y - y0) > TOUCH_SLOP) {
-            arc_pointer(x0, y0, 1);
-            arc_pointer(x, y, 1);
-            state = DRAG;
-        } else if (now - t0 >= TOUCH_MENU_US) {
-            arc_pointer(x0, y0, 2);
-            arc_pointer(x0, y0, 0);
-            state = DONE;
-        }
-        break;
-    case DRAG:
-        arc_pointer(x, y, 1);
-        break;
-    case DONE:
-        break;
-    }
+    *thirds += d * (size <= small ? 4 : 2);
+    int c = *thirds / 3;
+    *thirds -= c * 3;
+    return c;
+}
+
+static void touchpad(int dx, int dy, uint8_t buttons)
+{
+    static int tx, ty;
+    int w, h;
+    arc_screen_size(&w, &h);
+    arc_mouse(touch_counts(dx, &tx, w, 400), touch_counts(dy, &ty, h, 300));
+    arc_mouse_buttons(buttons & 3);     /* Select, Menu */
 }
 
 /* ---- Setup screen choices ---- */
@@ -728,7 +700,7 @@ static const emu_machine_t machine = {
     .audio_pending = arc_audio_pending,
     .hid_key = hid_key,
     .hid_mouse = hid_mouse,
-    .touch = touch,
+    .touchpad = touchpad,
     .choices = choices,
     .choice_count = CHOICES,
     .choice_names = choice_names,

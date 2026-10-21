@@ -9,7 +9,7 @@ Two Archimedes, chosen on the setup screen (Model):
   The A5000 is deliberately not done (the user's call: it would never
   reach full speed).
 
-Bluetooth/USB keyboard and mouse, the touch screen steering the mouse,
+Bluetooth/USB keyboard and mouse, the touch screen as a touchpad,
 `.adf` disc images in two floppy drives (and `.hdf` in the IDE drive), an
 LVGL setup screen and a web page. ESP-IDF v5.5.4, C.
 
@@ -57,10 +57,12 @@ console line, ~12 characters a second), `R <os 0|1|2> <KB> [model 0|1]`
 restart as Arthur / RISC OS 2 / RISC OS 3 with 512, 1024, 2048 or 4096 KB,
 as the A440 (0) or the A3020 (1: RISC OS 3, 2048 or 4096 KB).
 
-Touches on the Tab5: the picture is 960x720 at x=160, so a machine pixel
-(x, y) of a w x h mode is `t 160+x*960/w y*720/h`. In the 640x256 desktops
-the icon bar's :1 is `t 208 664`, :0 `t 290 664`, Apps `t 358 664`; a
-touch of 120 ms is a Select click, 900 ms a Menu click. Setup screen: Start
+The touch screen is a touchpad (esp32emu's), so a place on the screen is
+reached with `P x y 0` and clicked with `P x y 1` then `P x y 0` (machine
+pixels): in the 640x256 desktops the icon bar's :1 is (32, 236), :0
+(87, 236), Apps (132, 236). Touches anywhere: `t x y 120` a Select click
+where the pointer is, `t x y 900` Menu held, `t x y ms x2 y2` a move
+(the picture is 960x720 at x=160 on the Tab5). Setup screen: Start
 `t 1065 637`, Model `t 433|788 227` (A440, A3020), then System (y 298),
 Memory (y 369) and Menu button (y 440, `t 433|788`): for the A3020 System
 `t 348 298` and Memory `t 433|788 369`; the A440's three and four buttons
@@ -84,7 +86,7 @@ pc,r14`, `90 ]`, `100 CALL c%`, `RUN`; a few lines per `T`), and read
 
 | Path | What |
 |---|---|
-| `main/main.c` | The Archimedes as an `emu_machine_t`: memory, start, CMOS saving, key map, mouse buttons, touch, drives, status, console |
+| `main/main.c` | The Archimedes as an `emu_machine_t`: memory, start, CMOS saving, key map, mouse buttons, the touchpad (pixels to counts as RISC OS 3 moves the pointer), drives, status, console |
 | `main/rom_store.c` | ROMs from their flash partitions, else files in the SD card's `roms/` holding that OS |
 | `main/settings.c` | NVS `arc` |
 | `components/archimedes/` | The machine, platform independent (`include/arc.h`) |
@@ -142,8 +144,9 @@ memory wiring), and the ROMs' own code.
 - `keyboard.c`: the keyboard's microcontroller (HRST/RAK1/RAK2 handshake,
   RQID -> &81, key pairs C0/D0 + row/column, mouse pairs, BACK/SACK/SMAK
   acks; keys wait in a queue while the host has them off), typing
-  (`arc_type()`: each key 40 ms down, 40 ms up), and the touch pointer: a
-  queue of (x, y, buttons) steps steered by mouse counts.
+  (`arc_type()`: each key 40 ms down, 40 ms up), and the steered pointer
+  (`arc_pointer()`, the console's `P` and host scripts): a queue of
+  (x, y, buttons) steps steered by mouse counts.
 - `cmos.c`: the PCF8583 bit by bit on the IOC's lines; the clock is the
   host's; RAM bytes C0/C1 the year (set at reset, the RISC OS 3 checksum in
   3F kept valid); `arc_cmos_defaults()`: each OS's Delete/R-power-on result
@@ -312,7 +315,7 @@ lessons).
   100% at 61% (4.5 MIPS), Lander (mode 13 at 70 Hz) 98-100% at 100%
   (3.7-5.2 MIPS): no headroom. Internal RAM ~57-60 KB free while running.
 - Checked there: the setup screen, starting each OS, touch (tap = Select,
-  hold = Menu), floppy upload/insert/open, a blank disc from the web page,
+  hold = Menu; when it still put the pointer under the finger), floppy upload/insert/open, a blank disc from the web page,
   a blank 40 MB hard disc made and used by the A3020, Lander's picture
   without stripes, the debugger (hello, pause, step, next, read,
   continue). Not checked by ear or hand: sound, Bluetooth and USB
@@ -322,6 +325,10 @@ lessons).
   second after its last write (a disc put in before Start: none until it
   runs). Host: RISC OS 3.11's `*Free` on nine discs; Tab5 (2026-10-21):
   RISC OS 2's Applications Disc 2: 327680 of 819200, a blank 40 MB IDE disc 41773056.
+- **Touchpad** (Tab5, 2026-10-21, RISC OS 3.11 on the A3020, the 640x480
+  desktop): 150 panel pixels move the pointer 99 pixels each way (the counts
+  rule in `main.c` holds there); a Select tap opened Apps, the long press
+  its Filer menu. The 256-line modes not measured.
 
 ## Open items
 
@@ -341,6 +348,10 @@ lessons).
   serial, printer or Econet devices, no `.apd`/`.jfd` copy-protected
   images, no ST506 hard disc on the A440.
 - The CMOS clock isn't set back (the host's time is the clock).
+- **Clock** (the clock audit, 2026-10-21: `../esp32emu/CLAUDE.md`, To do):
+  the PCF8583's writes are ignored (`cmos.c`): setting the time in RISC OS
+  does nothing. The year bytes are set at reset only from a board year of
+  2024 or later.
 
 ## Working with the user
 
