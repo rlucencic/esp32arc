@@ -1,0 +1,74 @@
+diff --git a/components/arm2/arm2.c b/components/arm2/arm2.c
+index 6baed47..87ce9ea 100644
+--- a/components/arm2/arm2.c
++++ b/components/arm2/arm2.c
+@@ -465,9 +465,59 @@ static inline uint32_t add_flags(uint32_t a, uint32_t b, uint32_t r, uint32_t ca
+ /* ... of a subtraction a - b (- borrow) giving r */
+ static inline uint32_t sub_flags(uint32_t a, uint32_t b, uint32_t r, uint32_t carry)
+ {
++#if CONFIG_IDF_TARGET_ESP32P4
++    /* Experiment: keep subtraction NZCV synthesis branch-free and schedule
++     * its independent N/Z and overflow chains explicitly on the P4. */
++    uint32_t flags, overflow, tmp;
++    __asm__(
++        "xor %[overflow], %[a], %[b]\n\t"
++        "xor %[tmp], %[a], %[result]\n\t"
++        "and %[overflow], %[overflow], %[tmp]\n\t"
++        "and %[flags], %[result], %[nmask]\n\t"
++        "seqz %[tmp], %[result]\n\t"
++        "slli %[tmp], %[tmp], 30\n\t"
++        "or %[flags], %[flags], %[tmp]\n\t"
++        "snez %[tmp], %[carry]\n\t"
++        "slli %[tmp], %[tmp], 29\n\t"
++        "or %[flags], %[flags], %[tmp]\n\t"
++        "srli %[overflow], %[overflow], 3\n\t"
++        "and %[overflow], %[overflow], %[vmask]\n\t"
++        "or %[flags], %[flags], %[overflow]"
++        : [flags] "=&r" (flags), [overflow] "=&r" (overflow), [tmp] "=&r" (tmp)
++        : [a] "r" (a), [b] "r" (b), [result] "r" (r), [carry] "r" (carry),
++          [nmask] "r" (ARM2_N), [vmask] "r" (ARM2_V));
++    return flags;
++#else
+     return (r & ARM2_N) | (r ? 0 : ARM2_Z) | (carry ? ARM2_C : 0) |
+            ((((a ^ b) & (a ^ r)) >> 31) ? ARM2_V : 0);
++#endif
++}
++
++#if CONFIG_IDF_TARGET_ESP32P4
++/* Validate the actual assembly on target before booting an OS. Include
++ * subtraction with and without borrow, overflow and carry edge cases. */
++static void sub_flags_check(void)
++{
++    static const uint32_t edge[] = { 0, 1, 2, 0x7FFFFFFE, 0x7FFFFFFF,
++                                     0x80000000, 0x80000001, 0xFFFFFFFE, 0xFFFFFFFF };
++    uint32_t seed = 0x12345678;
++    for (unsigned i = 0; i < 10081; i++) {
++        seed = seed * 1664525u + 1013904223u;
++        uint32_t a = i < 81 ? edge[i / 9] : seed;
++        seed = seed * 1664525u + 1013904223u;
++        uint32_t b = i < 81 ? edge[i % 9] : seed;
++        for (unsigned borrow = 0; borrow <= 1; borrow++) {
++            uint32_t r = a - b - borrow;
++            uint32_t carry = borrow ? a > b : a >= b;
++            uint32_t expected = (r & ARM2_N) | (!r ? ARM2_Z : 0) | (carry ? ARM2_C : 0) |
++                                ((((a ^ b) & (a ^ r)) & ARM2_N) ? ARM2_V : 0);
++            if (sub_flags(a, b, r, carry) != expected) {
++                __builtin_trap();
++            }
++        }
++    }
+ }
++#endif
+ 
+ /* A data processing instruction: `opcode` (bits 24-21), operand 2's
+  * `form` and `s` (bit 20) are constants where it's inlined (arm2_run()
+@@ -1145,6 +1195,9 @@ static void make_conditions(void)
+ 
+ void arm2_init(arm2_t *c, const arm2_bus_t *bus, const uintptr_t *page)
+ {
++#if CONFIG_IDF_TARGET_ESP32P4
++    sub_flags_check();
++#endif
+     bool swp = c->swp;
+     memset(c, 0, sizeof(*c));
+     c->swp = swp;

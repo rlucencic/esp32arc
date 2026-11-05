@@ -1,0 +1,31 @@
+32000 samples, core 1
+ 60.9%  arm2_run
+ 34.9%  esp_cpu_wait_for_intr
+  1.9%  sound_run
+  0.9%  vidc_line_end
+  0.4%  vidc_line_ticks
+  0.3%  vPortExitCriticalMultiCore
+  0.3%  arc_run_frame
+  0.1%  memcpy (memcpy.c)
+  0.1%  c711_next_event
+  0.0%  keyboard_event (keyboard.c)
+  0.0%  sdio_data_to_rx_buf_task
+  0.0%  bus_read
+  0.0%  ioc_event
+  0.0%  ioc_next_event
+  0.0%  bus_write
+  0.0%  vPortClearInterruptMaskFromISR
+  0.0%  switch_mode
+  0.0%  _printf_i
+  0.0%  vidc_write
+  0.0%  arc_update_interrupts
+  0.0%  keyboard_next_event
+  0.0%  arc_schedule
+  0.0%  xTaskGetSchedulerState
+  0.0%  memc_write_register
+  0.0%  arc_audio_pending
+  0.0%  esp_crosscore_int_send
+  0.0%  emulation_task
+  0.0%  hosted_post_semaphore
+  0.0%  esp_vApplicationIdleHook
+  0.0%  ioc_read

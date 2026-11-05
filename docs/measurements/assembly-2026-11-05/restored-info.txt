@@ -1,0 +1,2 @@
+EMUINFO Archimedes running mode 640x480 50 Hz signature 503fdbcb frames 5722 PC &383403C SVC insns 36525 screen 640x480 4 bpp
+I (141900) emu: 51.0 fps (102% of 50 Hz) frames 5808 PC &3830884 SVC insns 35406 screen 640x480 4 bpp
