@@ -1,0 +1,21 @@
+diff --git a/components/arm2/arm2.c b/components/arm2/arm2.c
+index 6baed47..3166cef 100644
+--- a/components/arm2/arm2.c
++++ b/components/arm2/arm2.c
+@@ -375,8 +375,15 @@ static INLINE uint32_t operand2(arm2_t *c, run_t *r, uint32_t op, uint32_t pc, u
+ {
+     if (form == OP2_IMM) {
+         unsigned rot = (op >> 7) & 0x1E;
++        /* An unrotated byte needs no barrel-shifter work. Keep its early
++         * return before the rotate so the common small constants avoid
++         * the P4's two shifts and OR; an unrotated operand preserves C. */
++        if (rot == 0) {
++            *carry = (c->psr >> 29) & 1;
++            return op & 0xFF;
++        }
+         uint32_t v = ror32(op & 0xFF, rot);
+-        *carry = rot ? v >> 31 : (c->psr >> 29) & 1;
++        *carry = v >> 31;
+         return v;
+     }
+     unsigned rm = RM4(op);

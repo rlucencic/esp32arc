@@ -1,0 +1,31 @@
+diff --git a/components/arm2/arm2.c b/components/arm2/arm2.c
+index 6baed47..b532bb2 100644
+--- a/components/arm2/arm2.c
++++ b/components/arm2/arm2.c
+@@ -893,7 +893,12 @@ static INLINE void coprocessor(arm2_t *c, run_t *r, uint32_t op, uint32_t pc)
+ #define X16(l)          X8(l), X8(l)
+ #define X64(l)          X16(l), X16(l), X16(l), X16(l)
+ #define X256(l)         X64(l), X64(l), X64(l), X64(l)
+-#define COND_ROW        X64(cond), X64(cond), X16(cond), X16(cond), X16(cond_b), X16(cond_bl), X64(cond)
++#define CDP_PAIR(name, form) &&cond_dp_##name##_##form, &&cond_dp_##name##_##form
++#define CDP_ROW(form)   CDP_PAIR(and, form), CDP_PAIR(eor, form), CDP_PAIR(sub, form), CDP_PAIR(rsb, form), \
++                        CDP_PAIR(add, form), CDP_PAIR(adc, form), CDP_PAIR(sbc, form), CDP_PAIR(rsc, form), \
++                        CDP_PAIR(tst, form), CDP_PAIR(teq, form), CDP_PAIR(cmp, form), CDP_PAIR(cmn, form), \
++                        CDP_PAIR(orr, form), CDP_PAIR(mov, form), CDP_PAIR(bic, form), CDP_PAIR(mvn, form)
++#define COND_ROW        CDP_ROW(r), CDP_ROW(i), X64(cond), X16(cond), X16(cond), X16(cond_b), X16(cond_bl), X64(cond)
+ #define BLK_ROW        X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), \
+                         X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), \
+                         X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), X2(stm_ldm)
+@@ -936,6 +941,12 @@ void arm2_host_hook(arm2_t *c);         /* host builds: tracing */
+ #define PC              (r->pc - 4)
+ 
+ #define DP(name, opcode)                                                        \
++    cond_dp_##name##_i:                                                         \
++        if (!COND_PASSES()) goto next;                                          \
++        goto dp_##name##_i;                                                     \
++    cond_dp_##name##_r:                                                         \
++        if (!COND_PASSES()) goto next;                                          \
++        goto dp_##name##_r;                                                     \
+     dp_##name##_i:                                                              \
+         data_processing(c, r, op, PC, opcode, OP2_IMM, (op >> 20) & 1); NEXT(); \
+     dp_##name##_r:                                                              \

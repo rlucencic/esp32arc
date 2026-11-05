@@ -1,0 +1,1082 @@
+[
+  {
+    "t": 1793913609.272339,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(4.47 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913610.5080285,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      15,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(3.68 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913611.9323401,
+    "speed": 100,
+    "fps": 50.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(5.16 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913613.1683307,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(4.90 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913614.6135943,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(3.84 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913616.1258855,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(3.75 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913617.1579313,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(3.58 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913618.3855138,
+    "speed": 98,
+    "fps": 48.9,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(3.50 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913619.9164438,
+    "speed": 100,
+    "fps": 50.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(5.12 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913621.133606,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      15,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(5.04 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913622.180014,
+    "speed": 100,
+    "fps": 50.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(4.79 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913623.6045263,
+    "speed": 98,
+    "fps": 48.9,
+    "load": [
+      17,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(3.90 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913624.734333,
+    "speed": 98,
+    "fps": 48.9,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(3.71 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913626.3627899,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(4.01 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913627.3963466,
+    "speed": 100,
+    "fps": 50.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(5.43 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913628.6238365,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(5.24 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913629.7587426,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(5.00 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913631.085404,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(3.62 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913632.3164315,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(5.03 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913633.5482664,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(3.68 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913634.767819,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(3.87 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913636.0106056,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(4.94 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913637.2247143,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      15,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(4.89 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913638.4617164,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      17,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(3.82 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913639.7099576,
+    "speed": 100,
+    "fps": 49.8,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(3.74 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913640.9172719,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(3.70 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913642.1398306,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(3.62 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913643.3710034,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      17,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(5.10 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913644.605188,
+    "speed": 100,
+    "fps": 50.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(3.64 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  },
+  {
+    "t": 1793913645.8392184,
+    "speed": 98,
+    "fps": 49.0,
+    "load": [
+      16,
+      100
+    ],
+    "rows": [
+      [
+        "System",
+        "Acorn A3020 / A4000, 4 MB"
+      ],
+      [
+        "ROM",
+        "RISC OS 3.11 (29 Sep 1992)"
+      ],
+      [
+        "CPU",
+        "ARM250 at 12 MHz <span class=\"dim\">(3.71 million instructions a second)</span>"
+      ],
+      [
+        "Screen",
+        "320 \u00d7 256, 256 colours, 70.08 Hz <span class=\"dim\">(video 26% of the bus)</span>"
+      ],
+      [
+        "Free RAM",
+        "3456 KB of 4 MB <span class=\"dim\">(for applications: the Task Manager's Free and Next)</span>",
+        16
+      ],
+      [
+        "Sound",
+        "on, 20833 bytes a second"
+      ]
+    ]
+  }
+]

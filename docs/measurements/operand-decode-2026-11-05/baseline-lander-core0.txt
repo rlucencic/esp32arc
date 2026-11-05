@@ -1,0 +1,31 @@
+32000 samples, core 0
+ 83.1%  esp_cpu_wait_for_intr
+  5.9%  arc_render_line_rgb565
+  4.1%  memcpy (memcpy.c)
+  3.3%  vPortExitCriticalMultiCore
+  1.8%  present_task
+  0.1%  vPortClearInterruptMaskFromISR
+  0.1%  arc_audio_render
+  0.1%  speaker_task
+  0.1%  sdmmc_host_dma_prepare
+  0.1%  xPortEnterCriticalTimeout
+  0.1%  systimer_hal_connect_alarm_counter
+  0.1%  xPortInIsrContext
+  0.1%  esp_psram_check_ptr_addr
+  0.1%  xQueueSemaphoreTake
+  0.0%  xQueueGenericSend
+  0.0%  _printf_i
+  0.0%  sdmmc_host_do_transaction
+  0.0%  esp_crosscore_int_send
+  0.0%  i2c_master_transmit_receive
+  0.0%  s_i2c_start_end_command
+  0.0%  sdmmc_host_start_command
+  0.0%  esp_cache_msync
+  0.0%  esp_task_wdt_reset
+  0.0%  s_i2c_transaction_start
+  0.0%  memc_copy
+  0.0%  esp_vApplicationIdleHook
+  0.0%  fill_dma_descriptors
+  0.0%  panel_io_i2c_rx_param
+  0.0%  ble_hs_adv_parse_fields
+  0.0%  xTaskGetSchedulerState

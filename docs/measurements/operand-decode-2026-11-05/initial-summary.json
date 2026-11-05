@@ -1,0 +1,58 @@
+{
+  "baseline": {
+    "samples": 30,
+    "mean_fps": 49.09,
+    "mean_speed_percent": 98.2,
+    "mean_core_load": [
+      16.2,
+      100
+    ],
+    "loop_arm2_percent": [
+      60.3,
+      59.4,
+      60.2
+    ]
+  },
+  "immediate-fastpath": {
+    "samples": 30,
+    "mean_fps": 48.95333333333333,
+    "mean_speed_percent": 97.93333333333334,
+    "mean_core_load": [
+      15.766666666666667,
+      100
+    ],
+    "loop_arm2_percent": [
+      60.3,
+      60.6,
+      60.3
+    ]
+  },
+  "register-fastpath": {
+    "samples": 30,
+    "mean_fps": 49.50666666666667,
+    "mean_speed_percent": 99.06666666666666,
+    "mean_core_load": [
+      16.233333333333334,
+      100
+    ],
+    "loop_arm2_percent": [
+      59.6,
+      59.5,
+      59.1
+    ]
+  },
+  "conditional-dispatch": {
+    "samples": 30,
+    "mean_fps": 49.18333333333333,
+    "mean_speed_percent": 98.4,
+    "mean_core_load": [
+      16,
+      100
+    ],
+    "loop_arm2_percent": [
+      60.1,
+      59.9,
+      60.2
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "baseline": {
+    "arm2_run_bytes": 31982,
+    "arm2_run_sha256": "19d438a920816c18154682430ed8dab5922883f56b5f5c63374b81e3ad3e9565",
+    "application_sha256": "b7c9ea0f33e7d7acad71d89d05e35881cf36786ee66ace5bf4d541a433bc027f"
+  },
+  "immediate-fastpath": {
+    "arm2_run_bytes": 31938,
+    "arm2_run_sha256": "5d4fd5f6d3bfdff82b43047c97b7e4dd9f7fdd3ceec2d945be7b4a8f9443f01b",
+    "application_sha256": "1f3ca94d9e8725e3ea840a46244209d2a373e6f217c7fc31ee7fc9ca00b4b52b"
+  },
+  "register-fastpath": {
+    "arm2_run_bytes": 31996,
+    "arm2_run_sha256": "05e4947500a8d64f9d0fe52fe962bfd6edc8687b9997f011b4e65a892dfe6248",
+    "application_sha256": "30c3c6afeaddf20df29ce11c0ad078bb9b01a859344e53b91bcf5faa7be64a4f"
+  },
+  "conditional-dispatch": {
+    "arm2_run_bytes": 32444,
+    "arm2_run_sha256": "221ae19bfa0f43cebd835a68e2273d1fca364df88bae130aa92c5721f8079589",
+    "application_sha256": "4d97369b8a2866893cff0ffcc7e02bab5b2313579092b28a37feff5c8a3674ad"
+  },
+  "repeat": {
+    "arm2_run_bytes": 31982,
+    "arm2_run_sha256": "19d438a920816c18154682430ed8dab5922883f56b5f5c63374b81e3ad3e9565",
+    "application_sha256": "bdc908c8a445555a963c0f76181dbd78f348f46b75dbaef04e15bf2b9f13d870"
+  },
+  "retained-final": {
+    "arm2_run_bytes": 31996,
+    "arm2_run_sha256": "05e4947500a8d64f9d0fe52fe962bfd6edc8687b9997f011b4e65a892dfe6248",
+    "application_sha256": "8684a69f39b513d1f90f5a628f11743ff9aaeaf632fc2f6aa262162ab688e0c0"
+  }
+}
