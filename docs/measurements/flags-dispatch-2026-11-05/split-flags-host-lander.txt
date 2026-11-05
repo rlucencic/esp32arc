@@ -1,0 +1,23 @@
+host: RISC OS 3.11 (29 Sep 1992)
+arc: drive 0: /tmp/acorn-decode-2026-11-05/RO2Apps2.adf, 80 tracks, 2 sides, 5 x 1024
+host: frame 9000 PC=0009FFC insns 105427 screen 640x256 8 bpp 70.08 Hz DMA 26% sound on 20833 B/s IRQ A 40/2C B 40/96 FIQ 00/00 MEMC 0D0C
+host: frame 9000 :0 327680 bytes free of 819200
+host: screenshot /tmp/acorn-flags-2026-11-05/split-flags/host-final.ppm (320 x 256)
+host: :0 327680 bytes free of 819200
+host: 88360660 instructions from frame 9000
+  condition failed                      11.3%
+  data processing, immediate            18.1%
+  data processing, register             39.8%
+  data processing, shift by register     0.5%
+    (of those, setting flags)           27.7%
+  MUL, MLA                               0.0%
+  LDR                                    5.4%
+  STR                                    1.2%
+  LDRB                                   1.4%
+  STRB                                   8.0%
+  LDM                                    1.8%  (3.1 registers)
+  STM                                    2.5%  (6.0 registers)
+  B                                      7.7%
+  BL                                     2.5%
+  SWI                                    0.0%
+  other                                  0.0%

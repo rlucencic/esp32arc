@@ -1,0 +1,46 @@
+32000 samples, core 1; innermost source locations
+7.80% esp32emu/components/arm2/arm2.c:1065 (discriminator 4)
+2.61% esp32emu/components/arm2/arm2.c:1043 (discriminator 1)
+2.37% esp32emu/components/arm2/arm2.c:1019
+2.08% esp32emu/components/arm2/arm2.c:1075 (discriminator 4)
+2.07% esp32emu/components/arm2/arm2.c:987 (discriminator 4)
+1.92% esp32emu/components/arm2/arm2.c:1042 (discriminator 1)
+1.78% esp32emu/components/arm2/arm2.c:38
+1.68% esp32emu/components/arm2/arm2.c:489 (discriminator 2)
+1.57% esp32emu/components/arm2/arm2.c:1022
+1.52% esp32emu/components/arm2/arm2.c:489
+1.45% esp32emu/components/arm2/arm2.c:484
+1.41% esp32emu/components/arm2/arm2.c:727
+1.40% esp32emu/components/arm2/arm2.c:416 (discriminator 2)
+1.38% esp32emu/components/arm2/arm2.c:786
+1.35% esp32emu/components/arm2/arm2.c:485
+1.33% esp32emu/components/arm2/arm2.c:544
+1.26% esp32emu/components/arm2/arm2.c:728
+1.23% esp32emu/components/arm2/arm2.c:1067 (discriminator 40)
+1.17% esp32emu/components/arm2/arm2.c:1094 (discriminator 4)
+1.14% esp32emu/components/arm2/arm2.c:377
+1.09% esp32emu/components/arm2/arm2.c:617
+1.07% esp32emu/components/arm2/arm2.c:618
+1.06% esp32emu/components/arm2/arm2.c:416
+1.05% esp32emu/components/arm2/arm2.c:1088
+1.00% esp32emu/components/arm2/arm2.c:474
+0.91% esp32emu/components/arm2/arm2.c:44 (discriminator 1)
+0.90% esp32emu/components/arm2/arm2.c:382
+0.89% esp32emu/components/arm2/arm2.c:513
+0.86% esp32emu/components/arm2/arm2.c:527
+0.85% esp32emu/components/arm2/arm2.c:1092
+0.85% esp32emu/components/arm2/arm2.c:524
+0.83% esp32emu/components/arm2/arm2.c:529 (discriminator 8)
+0.82% esp32emu/components/arm2/arm2.c:516
+0.82% esp32emu/components/arm2/arm2.c:1075
+0.79% esp32emu/components/arm2/arm2.c:383
+0.73% esp32emu/components/arm2/arm2.c:473
+0.72% esp32emu/components/arm2/arm2.c:1065
+0.69% esp32emu/components/arm2/arm2.c:518
+0.66% esp32emu/components/arm2/arm2.c:419 (discriminator 1)
+0.64% esp32emu/components/arm2/arm2.c:429
+0.64% esp32emu/components/arm2/arm2.c:541
+0.63% esp32emu/components/arm2/arm2.c:1067 (discriminator 1)
+0.62% esp32emu/components/arm2/arm2.c:1043
+0.62% esp32emu/components/arm2/arm2.c:432
+0.59% esp32emu/components/arm2/arm2.c:329

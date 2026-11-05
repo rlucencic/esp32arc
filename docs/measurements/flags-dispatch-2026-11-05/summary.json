@@ -1,0 +1,43 @@
+{
+  "baseline": {
+    "runs": [
+      {
+        "frames": 2973,
+        "elapsed": 60.09935629100073,
+        "fps": 49.46808391099484,
+        "speed_percent": 98.93616782198968
+      },
+      {
+        "frames": 2984,
+        "elapsed": 60.09582196800329,
+        "fps": 49.65403421204166,
+        "speed_percent": 99.30806842408332
+      }
+    ],
+    "total_frames": 5957,
+    "total_seconds": 120.19517825900402,
+    "pooled_fps": 49.561056327596496,
+    "pooled_speed_percent": 99.12211265519299
+  },
+  "split-flags": {
+    "runs": [
+      {
+        "frames": 2995,
+        "elapsed": 60.09239870449528,
+        "fps": 49.83991427481419,
+        "speed_percent": 99.67982854962838
+      },
+      {
+        "frames": 2990,
+        "elapsed": 60.101508166502754,
+        "fps": 49.749167553609915,
+        "speed_percent": 99.49833510721983
+      }
+    ],
+    "total_frames": 5985,
+    "total_seconds": 120.19390687099803,
+    "pooled_fps": 49.79453747537796,
+    "pooled_speed_percent": 99.58907495075591
+  },
+  "relative_throughput_gain_percent": 0.4710980053333813
+}

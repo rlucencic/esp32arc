@@ -1,0 +1,12 @@
+{
+  "baseline": {
+    "arm2_run_bytes": 31996,
+    "arm2_run_sha256": "05e4947500a8d64f9d0fe52fe962bfd6edc8687b9997f011b4e65a892dfe6248",
+    "app_sha256": "b4831170c99b9c04bf924985025851df6bfb17d10650f8ab0c870790807238bb"
+  },
+  "split-flags": {
+    "arm2_run_bytes": 38478,
+    "arm2_run_sha256": "e1a3d30425ef084b99b5f91c0885cac9c2e6c7785bf2300e2fb4d4562f95c8a6",
+    "app_sha256": "ec21624045db7100bec30d6a12b9f92404067bf726c699c7f45819ae07d1d4be"
+  }
+}

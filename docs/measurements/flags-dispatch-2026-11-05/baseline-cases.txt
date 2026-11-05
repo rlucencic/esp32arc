@@ -1,0 +1,4 @@
+make: Entering directory '/home/robert/Development/esp32emu/components/arm2/test'
+build/cases
+190 of 190 checks passed
+make: Leaving directory '/home/robert/Development/esp32emu/components/arm2/test'

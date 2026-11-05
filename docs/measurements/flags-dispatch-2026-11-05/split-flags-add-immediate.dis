@@ -1,0 +1,36 @@
+
+split-flags/esp32arc.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .iram0.text:
+
+4ff04a34 <arm2_run+0x26cc>:
+4ff04a34:	00745593          	srli	a1,s0,0x7
+4ff04a38:	89f9                	andi	a1,a1,30
+4ff04a3a:	0ff47693          	zext.b	a3,s0
+4ff04a3e:	40b007b3          	neg	a5,a1
+4ff04a42:	00e45613          	srli	a2,s0,0xe
+4ff04a46:	00f697b3          	sll	a5,a3,a5
+4ff04a4a:	00b6d5b3          	srl	a1,a3,a1
+4ff04a4e:	03c00513          	li	a0,60
+4ff04a52:	00a45693          	srli	a3,s0,0xa
+4ff04a56:	03c67613          	andi	a2,a2,60
+4ff04a5a:	8fcd                	or	a5,a5,a1
+4ff04a5c:	8ee9                	and	a3,a3,a0
+4ff04a5e:	58a60ce3          	beq	a2,a0,4ff057f6 <arm2_run+0x348e>
+4ff04a62:	9626                	add	a2,a2,s1
+4ff04a64:	4210                	lw	a2,0(a2)
+4ff04a66:	03c00593          	li	a1,60
+4ff04a6a:	97b2                	add	a5,a5,a2
+4ff04a6c:	00b69463          	bne	a3,a1,4ff04a74 <arm2_run+0x270c>
+4ff04a70:	5650106f          	j	4ff067d4 <arm2_run+0x446c>
+4ff04a74:	96a6                	add	a3,a3,s1
+4ff04a76:	c29c                	sw	a5,0(a3)
+4ff04a78:	00e04463          	bgtz	a4,4ff04a80 <arm2_run+0x2718>
+4ff04a7c:	7110206f          	j	4ff0798c <arm2_run+0x5624>
+4ff04a80:	00c95793          	srli	a5,s2,0xc
+4ff04a84:	00779463          	bne	a5,t2,4ff04a8c <arm2_run+0x2724>
+4ff04a88:	d7efe06f          	j	4ff03006 <arm2_run+0xc9e>
+4ff04a8c:	0974c503          	lbu	a0,151(s1)
+4ff04a90:	87ca                	mv	a5,s2
+4ff04a92:	a57fd06f          	j	4ff024e8 <arm2_run+0x180>
