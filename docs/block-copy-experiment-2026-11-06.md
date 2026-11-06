@@ -85,3 +85,67 @@ The original A3020/ARM250 at 12 MHz, RISC OS 3.11 and 4 MB RAM was
 restored with the tested candidate still installed. The final game check
 completed 1,502 frames in 30.039 seconds, **50.001 FPS** (100.002% real
 time). Final desktop verification is recorded with the measurements.
+
+## Follow-up: contiguous lists above R0 (rejected)
+
+A later candidate retained the existing R0-prefix path and added a path
+for contiguous ranges starting at another register, excluding PC. Such
+lists occur frequently in the recorded replay: STM `4000` (8.8% of STMs),
+`0030` (5.0%), `001C` (3.8%) and `01C0` (2.8%); LDM `000C` (6.2% of LDMs),
+`001C` (5.3%), `00F0` (5.0%) and `01C0` (3.8%). These are percentages of
+each transfer class, not all instructions.
+
+After the existing direct-page/permission/bank checks, the candidate
+recognizes a bit run with `!(list & (list + (list & -list)))`. Empty lists
+already return earlier, and lists containing PC are excluded. The first
+register is `count16((list & -list) - 1)`, using the existing count table.
+A counted loop copies registers in ascending order; the existing writeback,
+watch, cycle and fallback rules remain. P4 interpreter code grows from
+43,154 to 43,358 bytes (+204), with the same 88 indirect jump sites.
+
+A fresh A440/ARM2 8 MHz comparison uses separate 30-second frame-counter
+timing and five 32,000-sample core-1 captures per build:
+
+| Build | ARM2 residency samples (%) | Mean (%) | Lander FPS |
+| --- | --- | ---: | ---: |
+| Existing R0-prefix optimization | 69.0, 68.5, 68.6, 68.2, 68.8 | 68.62 | 50.0020 |
+| Additional non-prefix range path | 70.0, 69.7, 70.1, 69.8, 69.9 | 69.90 | 49.9991 |
+
+The extension is rejected: CPU residency rises 1.28 percentage points
+(1.87% relatively). The measurements do not isolate added detection cost
+from compiler layout effects. Both builds remain paced at approximately
+50 FPS. Rounded sampling percentages are approximate, not cycle counts.
+A first startup attempt failed the A440 model confirmation and was
+excluded before game timing or profiling; the successful retry confirmed
+the model. The USB console had re-enumerated and temporary scripts were
+adjusted accordingly.
+
+Correctness validation passed:
+
+- All 190 CPU checks and 100,000 Unicorn cases (seed 1).
+- Exhaustive classification of all 65,536 register lists against the
+  definition of a nonempty PC-free contiguous range; 120 ranges accepted,
+  with correct starting-register indices.
+- 222,720 baseline/candidate reference cases across all 136 nonempty
+  contiguous lists (including PC-containing fallback cases), nine empty
+  or sparse lists, load/store, both S and writeback bits, four address
+  modes, base registers R0/R4/R14, user/SVC modes, and eight placements.
+  Placements cover ordinary, unaligned, cross-page, watched, slow and
+  privileged RAM plus bus access and abort. Comparison includes live and
+  banked registers, PC/PSR, permissions, code page, cycles/ticks,
+  instruction count, watch state, bus writes and affected RAM. Both traces
+  have SHA256
+  `0a6ad68a9e616cdf3b26e7f45bb11a23f06bdbbca4e4d3adcbfad2e436e3544e`.
+- Identical deterministic host replay: 88,360,660 measured instructions
+  and final PPM SHA256
+  `9e9f915326be41b8cb7485beac45621e255ccade404f5b18a4e55e9011392104`.
+
+The candidate interpreter SHA256 is
+`69ecbb56c51ae8b859c960c6812dec7639d0514b7c7205c85e022a4023342256`.
+The original core and exact saved baseline firmware were restored,
+retaining only the previously accepted R0-prefix optimization. Scratch
+profiles, fixtures and the rejected patch remain outside the repositories
+at `/tmp/acorn-block-range-2026-11-06`; no generated files are added here.
+
+The restored A3020 follow-up check measured 49.9990 FPS over 30 seconds.
+The board was returned to the 640×480 desktop and the serial port closed.
