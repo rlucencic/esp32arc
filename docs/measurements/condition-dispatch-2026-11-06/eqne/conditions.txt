@@ -1,0 +1,1 @@
+1536 condition cases pass (all NZCV/conditions, MOV/B/BL, direct and after in-run TEQP)

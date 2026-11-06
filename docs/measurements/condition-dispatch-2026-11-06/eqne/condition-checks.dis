@@ -1,0 +1,62 @@
+4ff02466:	0484d783          	lhu	a5,72(s1)
+4ff0246a:	8b85                	andi	a5,a5,1
+4ff0246c:	d3a5                	beqz	a5,4ff023cc <arm2_run+0x64>
+4ff0246e:	40f4                	lw	a3,68(s1)
+4ff02470:	040007b7          	lui	a5,0x4000
+4ff02474:	17f1                	addi	a5,a5,-4 # 3fffffc <CSR_UINTSTATUS+0x3fff34b>
+
+4ff024c0:	0484d783          	lhu	a5,72(s1)
+4ff024c4:	01c45613          	srli	a2,s0,0x1c
+4ff024c8:	40c7d7b3          	sra	a5,a5,a2
+4ff024cc:	8b85                	andi	a5,a5,1
+4ff024ce:	ee078fe3          	beqz	a5,4ff023cc <arm2_run+0x64>
+4ff024d2:	6605                	lui	a2,0x1
+
+4ff02544:	0484d783          	lhu	a5,72(s1)
+4ff02548:	8b85                	andi	a5,a5,1
+4ff0254a:	e80781e3          	beqz	a5,4ff023cc <arm2_run+0x64>
+4ff0254e:	6605                	lui	a2,0x1
+4ff02550:	e0060613          	addi	a2,a2,-512 # e00 <CSR_UINTSTATUS+0x14f>
+4ff02554:	0ff6f793          	zext.b	a5,a3
+
+4ff02562:	0484d783          	lhu	a5,72(s1)
+4ff02566:	8b85                	andi	a5,a5,1
+4ff02568:	fb99                	bnez	a5,4ff0247e <arm2_run+0x116>
+4ff0256a:	b58d                	j	4ff023cc <arm2_run+0x64>
+4ff0256c:	0484d783          	lhu	a5,72(s1)
+4ff02570:	8b89                	andi	a5,a5,2
+
+4ff0256c:	0484d783          	lhu	a5,72(s1)
+4ff02570:	8b89                	andi	a5,a5,2
+4ff02572:	e4078de3          	beqz	a5,4ff023cc <arm2_run+0x64>
+4ff02576:	6605                	lui	a2,0x1
+4ff02578:	e0060613          	addi	a2,a2,-512 # e00 <CSR_UINTSTATUS+0x14f>
+4ff0257c:	0ff6f793          	zext.b	a5,a3
+
+4ff03c7c:	0484d783          	lhu	a5,72(s1)
+4ff03c80:	8b89                	andi	a5,a5,2
+4ff03c82:	c399                	beqz	a5,4ff03c88 <arm2_run+0x1920>
+4ff03c84:	ffafe06f          	j	4ff0247e <arm2_run+0x116>
+4ff03c88:	f44fe06f          	j	4ff023cc <arm2_run+0x64>
+4ff03c8c:	0484d783          	lhu	a5,72(s1)
+
+4ff03c8c:	0484d783          	lhu	a5,72(s1)
+4ff03c90:	8b89                	andi	a5,a5,2
+4ff03c92:	c399                	beqz	a5,4ff03c98 <arm2_run+0x1930>
+4ff03c94:	fdafe06f          	j	4ff0246e <arm2_run+0x106>
+4ff03c98:	f34fe06f          	j	4ff023cc <arm2_run+0x64>
+4ff03c9c:	0484d783          	lhu	a5,72(s1)
+
+4ff03c9c:	0484d783          	lhu	a5,72(s1)
+4ff03ca0:	01c45693          	srli	a3,s0,0x1c
+4ff03ca4:	40d7d7b3          	sra	a5,a5,a3
+4ff03ca8:	8b85                	andi	a5,a5,1
+4ff03caa:	c399                	beqz	a5,4ff03cb0 <arm2_run+0x1948>
+4ff03cac:	fc2fe06f          	j	4ff0246e <arm2_run+0x106>
+
+4ff04d8e:	0484d783          	lhu	a5,72(s1)
+4ff04d92:	01c45693          	srli	a3,s0,0x1c
+4ff04d96:	40d7d7b3          	sra	a5,a5,a3
+4ff04d9a:	8b85                	andi	a5,a5,1
+4ff04d9c:	c399                	beqz	a5,4ff04da2 <arm2_run+0x2a3a>
+4ff04d9e:	ee0fd06f          	j	4ff0247e <arm2_run+0x116>

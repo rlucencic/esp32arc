@@ -1,0 +1,46 @@
+diff --git a/components/arm2/arm2.c b/components/arm2/arm2.c
+index 768a1e0..95ed96a 100644
+--- a/components/arm2/arm2.c
++++ b/components/arm2/arm2.c
+@@ -919,6 +919,8 @@ static INLINE void coprocessor(arm2_t *c, run_t *r, uint32_t op, uint32_t pc)
+ #define X16(l)          X8(l), X8(l)
+ #define X64(l)          X16(l), X16(l), X16(l), X16(l)
+ #define X256(l)         X64(l), X64(l), X64(l), X64(l)
++#define COND_ROW_TAG(name) X64(cond_##name), X64(cond_##name), X16(cond_##name), X16(cond_##name), \
++                           X16(cond_b_##name), X16(cond_bl_##name), X64(cond_##name)
+ #define COND_ROW        X64(cond), X64(cond), X16(cond), X16(cond), X16(cond_b), X16(cond_bl), X64(cond)
+ #define BLK_ROW        X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), \
+                         X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), X2(stm_ldm), \
+@@ -991,11 +993,22 @@ void arm2_host_hook(arm2_t *c);         /* host builds: tracing */
+         single_transfer(c, r, op, PC, load, byte, true); NEXT();
+ 
+ #define COND_PASSES()   ((c->cond_mask >> (op >> 28)) & 1)
++/* EQ and NE use the condition already selected by the dispatch table. */
++#define CONDITION(name, bit)                                                    \
++    cond_##name:                                                               \
++        if (!(c->cond_mask & (1u << bit))) goto next;                            \
++        goto *ops[0xE00 | ((op >> 20) & 0xFF)];                                  \
++    cond_b_##name:                                                             \
++        if (!(c->cond_mask & (1u << bit))) goto next;                            \
++        goto b;                                                                \
++    cond_bl_##name:                                                            \
++        if (!(c->cond_mask & (1u << bit))) goto next;                            \
++        goto bl;
+ 
+ int32_t ARM2_HOT arm2_run(arm2_t *c, int32_t ticks)
+ {
+     static const void *const ops[4096] = {
+-        COND_ROW, COND_ROW, COND_ROW, COND_ROW, COND_ROW, COND_ROW, COND_ROW,   /* EQ-VC */
++        COND_ROW_TAG(eq), COND_ROW_TAG(ne), COND_ROW, COND_ROW, COND_ROW, COND_ROW, COND_ROW,
+         COND_ROW, COND_ROW, COND_ROW, COND_ROW, COND_ROW, COND_ROW, COND_ROW,   /* HI-LE */
+         DP_ROW(r), DP_ROW(i),                   /* E00-E3F data processing (and multiplies) */
+         ST_ROW(i), ST_ROW(r),                   /* E40-E7F LDR, STR */
+@@ -1052,6 +1065,8 @@ decoded: __attribute__((unused));       /* the debugger's way back in */
+     insns++;
+     goto *ops[op >> 20];
+ 
++    CONDITION(eq, 0) CONDITION(ne, 1)
++
+ cond:
+     if (!COND_PASSES()) {
+         goto next;
