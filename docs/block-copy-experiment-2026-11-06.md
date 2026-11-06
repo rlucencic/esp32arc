@@ -149,3 +149,55 @@ at `/tmp/acorn-block-range-2026-11-06`; no generated files are added here.
 
 The restored A3020 follow-up check measured 49.9990 FPS over 30 seconds.
 The board was returned to the 640×480 desktop and the serial port closed.
+
+## Follow-up: STM {LR} and LDM {PC} (rejected)
+
+The next candidate tested exact-list paths rather than general contiguous
+range detection. STM `4000` (8.8% of recorded STMs) stores R14 directly
+inside the existing direct-page path, after the R0-prefix check. LDM
+`8000` (10.5% of LDMs) loads the PC value directly after the prefix check,
+then uses the existing shared PC/PSR update. User-bank, permission, watch,
+writeback, abort and cycle rules remain. The linked interpreter grows
+43,154 → 43,198 bytes (+44), retaining 88 indirect jump sites.
+
+The standard 190 checks and 100,000 Unicorn instructions (seed 1) passed.
+The 222,720 block-transfer reference cases were extended to vary loaded
+PSR mode bits across all four modes, assert masked IRQ/FIQ inputs before
+the instruction and enter any newly enabled interrupt in another run.
+The remaining matrix matches the range experiment above. Both state
+traces have SHA256
+`d20ff7e85cebab9e9659b2e747936dffcccb4050e08b9a2abe5f4f21608190c6`.
+The deterministic host replay again matches 88,360,660 instructions and
+PPM SHA256
+`9e9f915326be41b8cb7485beac45621e255ccade404f5b18a4e55e9011392104`.
+
+The same A440/ARM2 8 MHz protocol gives:
+
+| Build | ARM2 residency samples (%) | Mean (%) | Lander FPS |
+| --- | --- | ---: | ---: |
+| Saved baseline | 68.8, 68.9, 68.3, 68.9, 68.5 | 68.68 | 49.9738 |
+| Single-register paths | 70.3, 69.2, 70.0, 69.7, 69.8 | 69.80 | 50.0036 |
+| Freshly rebuilt baseline after candidate | 68.7, 68.8, 69.0, 68.7, 69.0 | 68.84 | 50.0004 |
+
+The extra control rebuild uses restored source and the same current
+configuration/toolchain. All 6,241 defined functions match the saved
+baseline byte-for-byte at identical addresses, including the 43,154-byte
+`arm2_run` and its original SHA256. Whole app binaries differ, so this
+comparison explicitly checks code rather than equating app hashes.
+The rebuilt control reproduces lower CPU use: the candidate is 1.12
+percentage points above the saved control and 0.96 above the rebuilt
+control (1.63% and 1.39% relatively). Rejected. Extra checks and compiler
+layout effects are not isolated; skipping scans at these source sites
+does not establish an overall gain. Short frame-counter measurements
+near the pacing limit vary slightly around 50 FPS.
+
+The candidate interpreter SHA256 is
+`35b2d8c891f3a9976f5195c1b4714f6cfd6c155c06f1283dff16622763f8306c`.
+The extension was reverted, and the freshly rebuilt baseline firmware
+was left installed. Only the previously accepted R0-prefix optimization
+remains. Raw evidence and temporary fixtures stay outside the repositories
+at `/tmp/acorn-single-block-2026-11-06`; no generated files are added here.
+
+The restored A3020 check after the single-register experiment measured
+49.9988 FPS over 30 seconds.
+The desktop screenshot was verified and the serial port closed.
