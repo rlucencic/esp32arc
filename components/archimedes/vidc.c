@@ -59,6 +59,7 @@ typedef struct {
 } frame_t;
 
 static picture_t s_now;                 /* the last snapshot (the emulation's own) */
+static uint8_t s_palette_tables;        /* valid lookup tables in s_now, by bpp_log */
 static frame_t s_frames[3];
 /* Which frame is the last copied (bits 1-0), the presenter's (3-2), and
  * one being copied (bit 4, the frame in s_copying): changed atomically
@@ -135,6 +136,7 @@ void vidc_reset(void)
 {
     memset(&vidc, 0, sizeof(vidc));
     memset(&s_now, 0, sizeof(s_now));
+    s_palette_tables = 0;
     for (int i = 0; i < 3; i++) {
         s_frames[i].pic.valid = false;  /* (a copy still running finishes into its frame) */
     }
@@ -171,6 +173,7 @@ void vidc_write(uint32_t v)
     }
     if (reg < 0x40) {
         vidc.palette[reg >> 2] = rgb565(value);
+        s_palette_tables = 0;
     } else if (reg == 0x40) {
         vidc.border = rgb565(value);
     } else if (reg < 0x50) {
@@ -214,11 +217,12 @@ static void snapshot(void)
         p->vend = p->vstart + 16;
     }
     memcpy(p->pal, vidc.palette, sizeof(p->pal));
-    if (bpp == 2) {
+    if (bpp == 2 && !(s_palette_tables & (1u << 2))) {
         for (int i = 0; i < 256; i++) {
             p->pairs[i] = vidc.palette[i & 15] | (uint32_t)vidc.palette[i >> 4] << 16;
         }
-    } else if (bpp == 3) {
+        s_palette_tables |= 1u << 2;
+    } else if (bpp == 3 && !(s_palette_tables & (1u << 3))) {
         for (int i = 0; i < 256; i++) {
             uint32_t e = vidc.reg[i & 15];
             uint32_t r = (e & 7) | ((i & 0x10) >> 1);
@@ -226,6 +230,7 @@ static void snapshot(void)
             uint32_t b = ((e >> 8) & 7) | ((i & 0x80) >> 4);
             p->pal8[i] = rgb565(r | g << 4 | b << 8);
         }
+        s_palette_tables |= 1u << 3;
     }
     /* The pointer */
     int hcsr = (int)((R(0x98) >> 13) & 0x7FF) + 6;
