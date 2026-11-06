@@ -1,0 +1,54 @@
+diff --git a/components/arm2/arm2.c b/components/arm2/arm2.c
+index 768a1e0..42dbf5b 100644
+--- a/components/arm2/arm2.c
++++ b/components/arm2/arm2.c
+@@ -610,14 +610,14 @@ static INLINE void swap(arm2_t *c, run_t *r, uint32_t op, uint32_t pc)
+ }
+ 
+ /* LDR, STR: `load` (bit 20), `byte` (22) and `reg` (25, the offset a
+- * register) constants where it's inlined
++ * register), and `up` (23, add the offset) constants where it's inlined
+  */
+ static INLINE void single_transfer(arm2_t *c, run_t *r, uint32_t op, uint32_t pc, const bool load, const bool byte,
+-                                   const bool reg)
++                                   const bool reg, const bool up)
+ {
+     unsigned rn = RN4(op);
+     unsigned rd = RD4(op);
+-    bool pre = (op >> 24) & 1, up = (op >> 23) & 1;
++    bool pre = (op >> 24) & 1;
+     bool wb = (op >> 21) & 1;
+     uint32_t off = reg ? offset_register(c, op, pc) : op & 0xFFF;
+     uint32_t base = rn == R15_4 ? (pc + 8) & ARM2_PC : REG(c, rn);
+@@ -910,9 +910,9 @@ static INLINE void coprocessor(arm2_t *c, run_t *r, uint32_t op, uint32_t pc)
+                         DP_PAIR(add, form), DP_PAIR(adc, form), DP_PAIR(sbc, form), DP_PAIR(rsc, form), \
+                         DP_PAIR(tst, form), DP_PAIR(teq, form), DP_PAIR(cmp, form), DP_PAIR(cmn, form), \
+                         DP_PAIR(orr, form), DP_PAIR(mov, form), DP_PAIR(bic, form), DP_PAIR(mvn, form)
+-#define ST_8(form)      &&str_##form, &&ldr_##form, &&str_##form, &&ldr_##form, \
+-                        &&strb_##form, &&ldrb_##form, &&strb_##form, &&ldrb_##form
+-#define ST_ROW(form)    ST_8(form), ST_8(form), ST_8(form), ST_8(form)
++#define ST_8(form, dir) &&str_##form##_##dir, &&ldr_##form##_##dir, &&str_##form##_##dir, &&ldr_##form##_##dir, \
++                        &&strb_##form##_##dir, &&ldrb_##form##_##dir, &&strb_##form##_##dir, &&ldrb_##form##_##dir
++#define ST_ROW(form)    ST_8(form, d), ST_8(form, u), ST_8(form, d), ST_8(form, u)
+ #define X2(l)           &&l, &&l
+ #define X4(l)           X2(l), X2(l)
+ #define X8(l)           X4(l), X4(l)
+@@ -984,11 +984,14 @@ void arm2_host_hook(arm2_t *c);         /* host builds: tracing */
+     dp_##name##_r_s:                                                            \
+         DP_REGISTER(opcode, true); NEXT();
+ 
++#define ST_DIR(name, load, byte, dir, up)                                        \
++    name##_i_##dir:                                                             \
++        single_transfer(c, r, op, PC, load, byte, false, up); NEXT();             \
++    name##_r_##dir:                                                             \
++        if (UNLIKELY(op & 0x10)) goto undefined;                                 \
++        single_transfer(c, r, op, PC, load, byte, true, up); NEXT();
+ #define ST(name, load, byte)                                                    \
+-    name##_i: single_transfer(c, r, op, PC, load, byte, false); NEXT();         \
+-    name##_r:                                                                   \
+-        if (UNLIKELY(op & 0x10)) goto undefined;                                \
+-        single_transfer(c, r, op, PC, load, byte, true); NEXT();
++    ST_DIR(name, load, byte, d, false) ST_DIR(name, load, byte, u, true)
+ 
+ #define COND_PASSES()   ((c->cond_mask >> (op >> 28)) & 1)
+ 

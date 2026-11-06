@@ -1,0 +1,1 @@
+65536 single-transfer cases agree with committed core (registers, PC, PSR, cycles, exception, all RAM)

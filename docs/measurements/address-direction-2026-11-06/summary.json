@@ -1,0 +1,23 @@
+{
+  "residency_percent": {
+    "baseline": [
+      68.9,
+      68.5,
+      68.3,
+      68.7,
+      68.6
+    ],
+    "direction": [
+      69.6,
+      69.4,
+      69.6,
+      69.7,
+      69.4
+    ]
+  },
+  "means": {
+    "baseline": 68.6,
+    "direction": 69.53999999999999
+  },
+  "relative_increase_percent": 1.3702623906705513
+}

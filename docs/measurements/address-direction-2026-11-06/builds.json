@@ -1,0 +1,23 @@
+{
+  "baseline": {
+    "arm2_run_bytes": 43154,
+    "arm2_run_address": "0x4ff02368",
+    "arm2_run_sha256": "05d946e3fad29dab88f699c4c0a8e4586385e594576d7c7d1598809a8b33940d",
+    "app_sha256": "530d5a1051343cf3c6f60f83abe0b4be16c9f032470d084f94a7ec821c7d0205",
+    "indirect_jump_sites": 88
+  },
+  "direction": {
+    "arm2_run_bytes": 45934,
+    "arm2_run_address": "0x4ff02368",
+    "arm2_run_sha256": "1963ac9586409a85bbce1fb7139b669a8866d8202f0c1c536e38585765101051",
+    "app_sha256": "773a7c9a9bce862c767dd592c9b7a4cba188479e328aebc3b24f7016ba4bf7e2",
+    "indirect_jump_sites": 95
+  },
+  "restored": {
+    "arm2_run_bytes": 43154,
+    "arm2_run_address": "0x4ff02368",
+    "arm2_run_sha256": "05d946e3fad29dab88f699c4c0a8e4586385e594576d7c7d1598809a8b33940d",
+    "app_sha256": "a1fe95b4ebfcf1ac11e1e7c2cf88807055dd1ed4c95435cb38b0def2e6f25a40",
+    "indirect_jump_sites": 88
+  }
+}
