@@ -1,0 +1,1 @@
+24576 immediate value/carry checks pass (all 4096 encodings, both input carries, three upper-opcode patterns)

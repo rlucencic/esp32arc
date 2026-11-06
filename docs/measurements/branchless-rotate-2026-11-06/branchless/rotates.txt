@@ -1,0 +1,1 @@
+18270 rotate checks pass under UBSan: 70 bit patterns, 261 counts, independent bit-position oracle

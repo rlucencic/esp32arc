@@ -1,0 +1,13 @@
+diff --git a/components/arm2/arm2.c b/components/arm2/arm2.c
+index 768a1e0..ac41330 100644
+--- a/components/arm2/arm2.c
++++ b/components/arm2/arm2.c
+@@ -41,7 +41,7 @@ static inline void flags_changed(arm2_t *c)
+ static inline uint32_t ror32(uint32_t v, unsigned n)
+ {
+     n &= 31;
+-    return n ? (v >> n) | (v << (32 - n)) : v;
++    return (v >> n) | (v << ((32 - n) & 31));
+ }
+ 
+ /* ---- Modes and the PSR ---- */

@@ -1,0 +1,11 @@
+{
+  "identical": true,
+  "builds": [
+    "baseline",
+    "branchless",
+    "restored"
+  ],
+  "bytes_compared_per_build": 43154,
+  "sha256": "05d946e3fad29dab88f699c4c0a8e4586385e594576d7c7d1598809a8b33940d",
+  "outlined_ror32_symbols": 0
+}
