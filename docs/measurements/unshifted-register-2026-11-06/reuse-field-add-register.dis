@@ -1,0 +1,51 @@
+
+reuse-field/esp32arc.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .iram0.text:
+
+4ff0480c <arm2_run+0x24a4>:
+4ff0480c:	00445693          	srli	a3,s0,0x4
+4ff04810:	0ff6f793          	zext.b	a5,a3
+4ff04814:	c399                	beqz	a5,4ff0481a <arm2_run+0x24b2>
+4ff04816:	7e00106f          	j	4ff05ff6 <arm2_run+0x3c8e>
+4ff0481a:	00241693          	slli	a3,s0,0x2
+4ff0481e:	00a45593          	srli	a1,s0,0xa
+4ff04822:	03c00613          	li	a2,60
+4ff04826:	00e45793          	srli	a5,s0,0xe
+4ff0482a:	03c6f693          	andi	a3,a3,60
+4ff0482e:	00c5f533          	and	a0,a1,a2
+4ff04832:	8ff1                	and	a5,a5,a2
+4ff04834:	40ec                	lw	a1,68(s1)
+4ff04836:	00c69463          	bne	a3,a2,4ff0483e <arm2_run+0x24d6>
+4ff0483a:	13b0206f          	j	4ff07174 <arm2_run+0x4e0c>
+4ff0483e:	96a6                	add	a3,a3,s1
+4ff04840:	4290                	lw	a2,0(a3)
+4ff04842:	03c00593          	li	a1,60
+4ff04846:	00b79463          	bne	a5,a1,4ff0484e <arm2_run+0x24e6>
+4ff0484a:	11b0206f          	j	4ff07164 <arm2_run+0x4dfc>
+4ff0484e:	97a6                	add	a5,a5,s1
+4ff04850:	439c                	lw	a5,0(a5)
+4ff04852:	03c00593          	li	a1,60
+4ff04856:	97b2                	add	a5,a5,a2
+4ff04858:	00b51463          	bne	a0,a1,4ff04860 <arm2_run+0x24f8>
+4ff0485c:	0da0306f          	j	4ff07936 <arm2_run+0x55ce>
+4ff04860:	00a486b3          	add	a3,s1,a0
+4ff04864:	c29c                	sw	a5,0(a3)
+4ff04866:	01a04463          	bgtz	s10,4ff0486e <arm2_run+0x2506>
+4ff0486a:	bc9fd06f          	j	4ff02432 <arm2_run+0xca>
+4ff0486e:	00c95793          	srli	a5,s2,0xc
+4ff04872:	00e79463          	bne	a5,a4,4ff0487a <arm2_run+0x2512>
+4ff04876:	dd4fe06f          	j	4ff02e4a <arm2_run+0xae2>
+4ff0487a:	87ca                	mv	a5,s2
+4ff0487c:	a505                	j	4ff04e9c <arm2_run+0x2b34>
+4ff0487e:	00445693          	srli	a3,s0,0x4
+4ff04882:	0ff6f793          	zext.b	a5,a3
+4ff04886:	c399                	beqz	a5,4ff0488c <arm2_run+0x2524>
+4ff04888:	3e10106f          	j	4ff06468 <arm2_run+0x4100>
+4ff0488c:	00241693          	slli	a3,s0,0x2
+4ff04890:	03c00613          	li	a2,60
+4ff04894:	00a45593          	srli	a1,s0,0xa
+4ff04898:	00e45793          	srli	a5,s0,0xe
+4ff0489c:	03c6f693          	andi	a3,a3,60
+4ff048a0:	40e8                	lw	a0,68(s1)

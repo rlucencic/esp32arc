@@ -1,0 +1,50 @@
+
+baseline/esp32arc.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .iram0.text:
+
+4ff04b46 <arm2_run+0x27de>:
+4ff04b46:	01047793          	andi	a5,s0,16
+4ff04b4a:	66079663          	bnez	a5,4ff051b6 <arm2_run+0x2e4e>
+4ff04b4e:	00241793          	slli	a5,s0,0x2
+4ff04b52:	00a45693          	srli	a3,s0,0xa
+4ff04b56:	00e45593          	srli	a1,s0,0xe
+4ff04b5a:	03c00613          	li	a2,60
+4ff04b5e:	03c7f793          	andi	a5,a5,60
+4ff04b62:	8ef1                	and	a3,a3,a2
+4ff04b64:	8df1                	and	a1,a1,a2
+4ff04b66:	8015                	srli	s0,s0,0x5
+4ff04b68:	00c79463          	bne	a5,a2,4ff04b70 <arm2_run+0x2808>
+4ff04b6c:	6dc0106f          	j	4ff06248 <arm2_run+0x3ee0>
+4ff04b70:	97a6                	add	a5,a5,s1
+4ff04b72:	4388                	lw	a0,0(a5)
+4ff04b74:	07f47613          	andi	a2,s0,127
+4ff04b78:	c219                	beqz	a2,4ff04b7e <arm2_run+0x2816>
+4ff04b7a:	36d0306f          	j	4ff086e6 <arm2_run+0x637e>
+4ff04b7e:	03c00613          	li	a2,60
+4ff04b82:	00c59463          	bne	a1,a2,4ff04b8a <arm2_run+0x2822>
+4ff04b86:	6b20106f          	j	4ff06238 <arm2_run+0x3ed0>
+4ff04b8a:	00b487b3          	add	a5,s1,a1
+4ff04b8e:	439c                	lw	a5,0(a5)
+4ff04b90:	03c00613          	li	a2,60
+4ff04b94:	97aa                	add	a5,a5,a0
+4ff04b96:	00c69463          	bne	a3,a2,4ff04b9e <arm2_run+0x2836>
+4ff04b9a:	4260206f          	j	4ff06fc0 <arm2_run+0x4c58>
+4ff04b9e:	96a6                	add	a3,a3,s1
+4ff04ba0:	c29c                	sw	a5,0(a3)
+4ff04ba2:	00e04463          	bgtz	a4,4ff04baa <arm2_run+0x2842>
+4ff04ba6:	6ec0306f          	j	4ff08292 <arm2_run+0x5f2a>
+4ff04baa:	00c95793          	srli	a5,s2,0xc
+4ff04bae:	00779463          	bne	a5,t2,4ff04bb6 <arm2_run+0x284e>
+4ff04bb2:	c54fe06f          	j	4ff03006 <arm2_run+0xc9e>
+4ff04bb6:	0974c503          	lbu	a0,151(s1)
+4ff04bba:	87ca                	mv	a5,s2
+4ff04bbc:	92dfd06f          	j	4ff024e8 <arm2_run+0x180>
+4ff04bc0:	01047793          	andi	a5,s0,16
+4ff04bc4:	5e079963          	bnez	a5,4ff051b6 <arm2_run+0x2e4e>
+4ff04bc8:	00241793          	slli	a5,s0,0x2
+4ff04bcc:	00a45593          	srli	a1,s0,0xa
+4ff04bd0:	00e45613          	srli	a2,s0,0xe
+4ff04bd4:	03c00693          	li	a3,60
+4ff04bd8:	03c7f793          	andi	a5,a5,60

@@ -313,6 +313,7 @@ static const char *const s_mix_names[MIX_KINDS] = {
     "  (of those, setting flags)", "MUL, MLA", "LDR", "STR", "LDRB", "STRB", "LDM", "STM", "B", "BL", "SWI", "other",
 };
 static uint64_t s_mix[MIX_KINDS], s_mix_regs[2], s_mix_total;
+static uint64_t s_mix_plain[2];
 
 static void mix_count(const arm2_t *c, uint32_t op)
 {
@@ -348,6 +349,9 @@ static void mix_count(const arm2_t *c, uint32_t op)
             return;
         }
         s_mix[(op & 0x10) ? MIX_DP_SHIFT_REG : MIX_DP_REG]++;
+        if (!(op & 0xFF0)) {
+            s_mix_plain[(op >> 20) & 1]++;
+        }
         if (op & (1u << 20)) {
             s_mix[MIX_DP_S]++;
         }
@@ -395,6 +399,12 @@ static void mix_print(void)
         }
         printf("\n");
     }
+    uint64_t plain = s_mix_plain[0] + s_mix_plain[1];
+    printf("host: unshifted register operands: %llu (%.1f%% of register operands, %.1f%% of all instructions)\n",
+           (unsigned long long)plain, s_mix[MIX_DP_REG] ? 100.0 * (double)plain / (double)s_mix[MIX_DP_REG] : 0.0,
+           100.0 * (double)plain / (double)s_mix_total);
+    printf("host: unshifted register operands by S: clear %llu, set %llu\n",
+           (unsigned long long)s_mix_plain[0], (unsigned long long)s_mix_plain[1]);
 }
 
 void arm2_host_hook(arm2_t *c)

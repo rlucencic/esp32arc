@@ -1,0 +1,56 @@
+diff --git a/components/arm2/arm2.c b/components/arm2/arm2.c
+index 6f32df3..d0ecaf1 100644
+--- a/components/arm2/arm2.c
++++ b/components/arm2/arm2.c
+@@ -366,7 +366,7 @@ uint8_t arm2_peek8(const arm2_t *c, uint32_t addr)
+ /* Operand 2's forms: an immediate (bit 25), a register shifted by a
+  * constant, or by a register (bit 4)
+  */
+-enum { OP2_IMM, OP2_SHIFT_IMM, OP2_SHIFT_REG };
++enum { OP2_IMM, OP2_SHIFT_IMM, OP2_SHIFT_REG, OP2_PLAIN };
+ 
+ /* Operand 2 of a data processing instruction (`form` a constant where
+  * it's inlined); *carry its carry out. `pc` the instruction's address.
+@@ -380,6 +380,10 @@ static INLINE uint32_t operand2(arm2_t *c, run_t *r, uint32_t op, uint32_t pc, u
+         return v;
+     }
+     unsigned rm = RM4(op);
++    if (form == OP2_PLAIN) {
++        *carry = (c->psr >> 29) & 1;
++        return rm == R15_4 ? ((pc + 8) & ARM2_PC) | c->psr : REG(c, rm);
++    }
+     unsigned type = (op >> 5) & 3;
+     uint32_t v;
+     unsigned amount;
+@@ -940,6 +944,17 @@ void arm2_host_hook(arm2_t *c);         /* host builds: tracing */
+  */
+ #define PC              (r->pc - 4)
+ 
++/* Bits 4-11 together identify plain Rm before either kind of shift. */
++#define DP_REGISTER(opcode, s)                                                  \
++    do {                                                                        \
++        if (LIKELY((op & 0xFF0) == 0)) {                                       \
++            data_processing(c, r, op, PC, opcode, OP2_PLAIN, s);                \
++        } else {                                                               \
++            if (UNLIKELY(op & 0x10)) goto dp_shift_reg;                         \
++            data_processing(c, r, op, PC, opcode, OP2_SHIFT_IMM, s);            \
++        }                                                                      \
++    } while (0)
++
+ /* Dispatch encodes S too, so unused flag calculations disappear at compile time. */
+ #define DP(name, opcode)                                                        \
+     dp_##name##_i:                                                              \
+@@ -947,11 +962,9 @@ void arm2_host_hook(arm2_t *c);         /* host builds: tracing */
+     dp_##name##_i_s:                                                            \
+         data_processing(c, r, op, PC, opcode, OP2_IMM, true); NEXT();             \
+     dp_##name##_r:                                                              \
+-        if (UNLIKELY(op & 0x10)) goto dp_shift_reg;                             \
+-        data_processing(c, r, op, PC, opcode, OP2_SHIFT_IMM, false); NEXT();     \
++        DP_REGISTER(opcode, false); NEXT();                                    \
+     dp_##name##_r_s:                                                            \
+-        if (UNLIKELY(op & 0x10)) goto dp_shift_reg;                             \
+-        data_processing(c, r, op, PC, opcode, OP2_SHIFT_IMM, true); NEXT();
++        DP_REGISTER(opcode, true); NEXT();
+ 
+ #define ST(name, load, byte)                                                    \
+     name##_i: single_transfer(c, r, op, PC, load, byte, false); NEXT();         \

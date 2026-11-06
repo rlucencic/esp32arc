@@ -1,0 +1,95 @@
+{
+  "baseline": {
+    "a3020_lander": {
+      "start": {
+        "time": 79756.71613472051,
+        "latency": 0.002467352998792194,
+        "frames": 2092,
+        "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature cf235d52 frames 2092 PC &000A568 USR insns 81817 screen 320x256 8 bpp"
+      },
+      "end": {
+        "time": 79816.84702509,
+        "latency": 0.0026862359954975545,
+        "frames": 5098,
+        "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature 7c87598a frames 5098 PC &0009C5C USR insns 90946 screen 320x256 8 bpp"
+      },
+      "elapsed": 60.13089036948804,
+      "frames": 3006,
+      "fps": 49.990944446838284,
+      "speed_percent": 99.98188889367657
+    },
+    "register_loop_arm2_percent": [
+      62.9,
+      62.3,
+      62.3
+    ],
+    "register_loop_mean_percent": 62.5,
+    "a440_arm2_percent": [
+      71.4,
+      71.1,
+      71.1
+    ],
+    "a440_arm2_mean_percent": 71.2
+  },
+  "fused-plain": {
+    "a3020_lander": {
+      "start": {
+        "time": 79979.5792857015,
+        "latency": 0.0038219249981921166,
+        "frames": 2091,
+        "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature f70d274d frames 2091 PC &0009F18 USR insns 73049 screen 320x256 8 bpp"
+      },
+      "end": {
+        "time": 80039.67016686901,
+        "latency": 0.0021820519905304536,
+        "frames": 5096,
+        "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature 7c87598a frames 5096 PC &0008330 USR insns 75969 screen 320x256 8 bpp"
+      },
+      "elapsed": 60.09088116750354,
+      "frames": 3005,
+      "fps": 50.00758753434739,
+      "speed_percent": 100.01517506869477
+    },
+    "register_loop_arm2_percent": [
+      60.1,
+      60.8,
+      60.3
+    ],
+    "register_loop_mean_percent": 60.4
+  },
+  "reuse-field": {
+    "a3020_lander": {
+      "start": {
+        "time": 80265.4450137095,
+        "latency": 0.002288699004566297,
+        "frames": 2092,
+        "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature be7d84c6 frames 2092 PC &000A564 USR insns 81207 screen 320x256 8 bpp"
+      },
+      "end": {
+        "time": 80325.537873013,
+        "latency": 0.002508350007701665,
+        "frames": 5097,
+        "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature b26711a7 frames 5097 PC &00082E8 USR insns 93029 screen 320x256 8 bpp"
+      },
+      "elapsed": 60.092859303505975,
+      "frames": 3005,
+      "fps": 50.005941385196834,
+      "speed_percent": 100.01188277039367
+    },
+    "register_loop_arm2_percent": [
+      60.2,
+      59.7,
+      59.9
+    ],
+    "register_loop_mean_percent": 59.93333333333334,
+    "a440_arm2_percent": [
+      70.5,
+      70.7,
+      70.7
+    ],
+    "a440_arm2_mean_percent": 70.63333333333334
+  },
+  "final": {},
+  "register_loop_relative_residency_reduction_percent": 4.1066666666666585,
+  "a440_relative_arm2_residency_reduction_percent": 0.7958801498127333
+}

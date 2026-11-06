@@ -1,0 +1,30 @@
+{
+  "final": {
+    "arm2_run_bytes": 43178,
+    "arm2_run_address": "0x4ff02368",
+    "arm2_run_sha256": "93a1d5d51b8b9dc6ebf2980cc24e96435eb504546e04488f0e3e68e610baaee7",
+    "app_sha256": "96cf743fc35882b431f34dc198fa45c3c05fc38a7e1c3be2594e70016f235701",
+    "indirect_jump_sites": 88
+  },
+  "baseline": {
+    "arm2_run_bytes": 38478,
+    "arm2_run_address": "0x4ff02368",
+    "arm2_run_sha256": "e1a3d30425ef084b99b5f91c0885cac9c2e6c7785bf2300e2fb4d4562f95c8a6",
+    "app_sha256": "112e22535b019dc4b45f1135f0870bfa827ca6f8f4a34a219a0a2f9a54f112fd",
+    "indirect_jump_sites": 66
+  },
+  "reuse-field": {
+    "arm2_run_bytes": 43178,
+    "arm2_run_address": "0x4ff02368",
+    "arm2_run_sha256": "93a1d5d51b8b9dc6ebf2980cc24e96435eb504546e04488f0e3e68e610baaee7",
+    "app_sha256": "9bbc84ca47e13b0dcda4f3b6397d90537ebd25f0a1819d9d68bb64d2a5be6e2e",
+    "indirect_jump_sites": 88
+  },
+  "fused-plain": {
+    "arm2_run_bytes": 43706,
+    "arm2_run_address": "0x4ff02368",
+    "arm2_run_sha256": "95ff565e4d49905794a4d7bb9c4686a36b117b00a34168d82c57f32cadc2b35f",
+    "app_sha256": "6397c8f5e2db8f47fbd9d7146352f31f3338627d1b822cab334acc82af1c79ad",
+    "indirect_jump_sites": 88
+  }
+}
