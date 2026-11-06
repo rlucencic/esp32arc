@@ -1,7 +1,7 @@
 # Archimedes optimization status and remaining work
 
 Updated 2026-11-06 after retaining the pre-indexed/no-writeback LDR/STR
-handlers. This is a bounded performance-pass assessment, not a percentage
+handlers, rejecting the post-indexed follow-up and refreshing the profile. This is a bounded performance-pass assessment, not a percentage
 of emulator feature completion or a prediction of remaining speedup.
 
 ## Current measured position
@@ -28,29 +28,34 @@ the tighter target. These are Lander results, not guarantees for other
 games or OS versions. Results from older sampling-residency experiments
 must not be added to these cycle percentages as a cumulative speedup.
 
-## Bounded remainder of this performance pass
+## Bounded pass: completed work and remainder
 
-1. **Normal post-indexed transfers (P=0/W=0).** Test selecting fixed
-   indexing/writeback behavior through the existing dispatch table, while
-   preserving user-transfer forms, abort writeback, R15 and timing.
-   The pre-indexed result motivates a trial; it does not validate it.
-2. **One fresh profile of the retained build.** CPU execution dominated
-   earlier profiles, but the last handler change can move the hotspots.
-   Investigate one further distinct CPU candidate only if that profile
-   supports it. Previously rejected cached-fetch-pointer, compact-table,
-   condition-table and compiler-tail variants remain rejected.
-3. **Broader regression/workload coverage.** Check other available games,
-   display modes, sound-heavy software and disk activity on both models.
-   The deterministic mode-switch and CPU tests already used are useful
-   correctness checks, but cannot substitute for that software coverage.
+1. **Completed: normal post-indexed transfers (P=0/W=0).** The
+   [candidate was rejected](postindexed-transfer-experiment-2026-11-06.md).
+   It passed CPU/reference/replay correctness checks, but the matched
+   extended-startup A3020 run used 109.072% more frame-call cycles and
+   reached only 25.731 FPS versus the restored control's 49.999 FPS.
+   Its extra 4,992 internal code bytes are not retained. The accepted
+   pre-indexed implementation remains unchanged.
+2. **Completed: fresh retained-build profile.** A 32,000-sample A3020
+   Lander scout places 95.891% of periodic samples in ARM2. The hottest
+   PC is the shared NEXT tail's guest-opcode load. This is not a speed
+   comparison or exact CPU-utilization estimate, and does not validate
+   previously rejected fetch/dispatch variants. No further distinct CPU
+   candidate is selected from this scout alone.
+3. **Remaining: broader regression/workload coverage.** Check other
+   available games, display modes, sound-heavy software and disk activity
+   on both models. Existing deterministic mode-switch and CPU tests are
+   useful correctness checks, but cannot substitute for that coverage.
 
-This is a stopping point for the current optimization pass: finish the
-post-index trial, inspect a fresh profile, and pursue at most one further
-profile-supported CPU candidate before moving emphasis to compatibility
-and regression testing. Small sound/VIDC changes remain lower priority
-unless a relevant workload shows those devices becoming expensive.
-There is no measured basis for promising another fixed percentage gain.
-New software may justify a new performance investigation later.
+The currently identified micro-optimization trials are finished. Broader
+software coverage is the next priority. At most one further bounded CPU
+candidate should be pursued if a distinct profile-supported hypothesis
+emerges; this is not an open-ended search through previously rejected
+variants. Small sound/VIDC changes stay lower priority unless a relevant
+workload shows those devices becoming expensive. There is no measured
+basis for promising another fixed percentage gain. New software may
+justify another performance investigation later.
 
 ## Remaining functional validation and scope
 
