@@ -313,11 +313,14 @@ protocol, debugging options and the lessons learned along the way.
   writing, blank discs), the A3020's IDE disc, the setup screen and the
   web page are checked. Not tried by hand yet: sound on the speaker, a
   Bluetooth or USB keyboard and mouse, the Tab5 Keyboard.
-- **Speed**: on the A440 the desktops take 45-65% of the Tab5's emulation
-  core, Lander about 90%; on the A3020 the desktop 37%, Lander all of it
-  (98-100% of the real speed). Software that keeps the ARM busier still
-  may run below full speed (the clock and sound stay right, the program
-  slows down).
+- **Speed**: the latest measured Lander runs remain paced near 50 FPS on
+  both models. At 360 MHz, machine frame calls average 12.96 ms on A440
+  and 18.63 ms on A3020 against a nominal 20 ms frame budget. Runtime work
+  outside those calls still needs time; these are averages for one game,
+  not a guarantee for busier software. See the
+  [optimization status and remaining work](docs/optimization-status-2026-11-06.md)
+  and [measured comparison](docs/preindexed-transfer-experiment-2026-11-06.md).
+  Slower software keeps its emulated clock and sound timing.
 - No ARM3, MEMC2, A3000 or A5000 (which couldn't run at full speed on the
   Tab5); no ST506 hard disc on the A440, podules, serial or printer
   devices, Econet.
