@@ -6,6 +6,8 @@ RO2Apps2.adf in :0 first. --boot assumes freshly flashed firmware at setup
 and the standard Tab5 Start button position. Without --boot, start Lander
 manually before measuring. The result and a sibling .log file containing
 runtime messages are written; the port is released on completion or failure.
+--cycle-frames also captures opt-in whole-machine frame-call cycles through
+the C command, including interrupts/preemption and excluding runtime pacing.
 """
 import argparse
 import contextlib
@@ -20,16 +22,21 @@ parser = argparse.ArgumentParser(description='Measure Lander using guest frame c
 parser.add_argument('port', help='Native USB console, for example /dev/ttyACM1')
 parser.add_argument('output')
 parser.add_argument('--seconds', type=int, default=60)
+parser.add_argument('--cycle-frames', type=int, default=0, help='Also capture direct frame-call cycles over this many frames (1..1000)')
+parser.add_argument('--cycle-captures', type=int, default=5, help='Number of separate cycle captures (default 5)')
 parser.add_argument('--boot', action='store_true', help='After flashing: start the setup screen, then launch Lander from drive :0')
 args = parser.parse_args()
 if args.seconds <= 0:
     parser.error('--seconds must be positive')
+if not 0 <= args.cycle_frames <= 1000 or args.cycle_captures < 1:
+    parser.error('--cycle-frames must be 0..1000 and --cycle-captures must be positive')
 console_path = Path(__file__).resolve().parents[2] / 'esp32emu' / 'tools' / 'emu_console.py'
 spec = importlib.util.spec_from_file_location('console', console_path)
 console = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(console)
 port = console.open_port(args.port)
 logs = io.StringIO()
+cycle_capture_id = None
 
 def drain(seconds):
     with contextlib.redirect_stdout(logs):
@@ -53,6 +60,50 @@ def info():
             return {'time': (sent + received) / 2, 'latency': received-sent,
                     'frames': int(match[1]), 'info': line}
     raise RuntimeError('No console state response')
+
+def cycle_status(frames=None):
+    port.reset_input_buffer()
+    send('C' if frames is None else f'C {frames}')
+    deadline = time.monotonic() + 5
+    while time.monotonic() < deadline:
+        line = port.readline().decode(errors='replace').strip()
+        if line.startswith('EMUCYCLES '):
+            result = json.loads(line[len('EMUCYCLES '):])
+            if 'error' in result:
+                raise RuntimeError('Cycle capture: ' + result['error'])
+            for short, full in [('hz', 'cpu_hz'), ('now_hz', 'current_cpu_hz'),
+                                ('us', 'wall_us'), ('min', 'min_cycles'),
+                                ('max', 'max_cycles'), ('invalid', 'invalid_frames')]:
+                result[full] = result.pop(short)
+            return result
+    raise RuntimeError('No cycle-capture response (requires firmware with the C command)')
+
+
+def capture_cycles(frames):
+    global cycle_capture_id
+    start = cycle_status(frames)
+    cycle_capture_id = start['id']
+    deadline = time.monotonic() + frames / 50 * 3 + 10
+    while True:
+        drain(0.25)
+        result = cycle_status()
+        if result['cpu_hz'] != start['cpu_hz'] or result['current_cpu_hz'] != start['cpu_hz']:
+            raise RuntimeError('CPU frequency changed during cycle capture')
+        if result['id'] != start['id']:
+            raise RuntimeError('Cycle capture replaced or firmware restarted')
+        if result['state'] == 'done':
+            break
+        if result['state'] != 'running' or time.monotonic() >= deadline:
+            raise RuntimeError('Cycle capture stopped or timed out')
+    if (result['frames'] != frames or result['invalid_frames'] or not result['insns'] or
+            result['cpu_hz'] != start['cpu_hz'] or result['current_cpu_hz'] != start['cpu_hz']):
+        raise RuntimeError('Invalid cycle capture: ' + json.dumps(result))
+    cycle_capture_id = None
+    result['cycles_per_frame'] = result['cycles'] / frames
+    result['cycles_per_guest_instruction'] = result['cycles'] / result['insns']
+    result['frame_call_us_per_frame'] = result['wall_us'] / frames
+    return result
+
 
 try:
     if args.boot:
@@ -78,9 +129,34 @@ try:
     frames = end['frames'] - start['frames']
     result = {'start': start, 'end': end, 'elapsed': elapsed, 'frames': frames,
               'fps': frames/elapsed, 'speed_percent': frames/elapsed*2}
+    if args.cycle_frames:
+        result['cycle_captures'] = []
+        for n in range(args.cycle_captures):
+            print(f'Capturing frame-call cycles {n + 1}/{args.cycle_captures}', flush=True)
+            before = info()
+            capture = capture_cycles(args.cycle_frames)
+            after = info()
+            if any('screen 320x256 8 bpp' not in sample['info'] for sample in (before, after)):
+                raise RuntimeError('Lander video mode changed during cycle capture')
+            observed_frames = after['frames'] - before['frames']
+            if observed_frames < args.cycle_frames:
+                raise RuntimeError('Guest frame counter reset or did not advance with capture')
+            capture['start'] = before
+            capture['end'] = after
+            capture['observed_fps'] = observed_frames / (after['time'] - before['time'])
+            result['cycle_captures'].append(capture)
     Path(args.output).write_text(json.dumps(result, indent=2) + '\n')
     runtime_log = '\n'.join(line for line in logs.getvalue().splitlines() if ') emu:' in line)
     Path(args.output).with_suffix('.log').write_text(runtime_log + '\n')
     print(json.dumps(result), flush=True)
 finally:
-    port.close()
+    try:
+        if cycle_capture_id is not None:
+            try:
+                current = cycle_status()
+                if current['id'] == cycle_capture_id and current['state'] == 'running':
+                    send('C stop')
+            except Exception:
+                pass  # Preserve the original failure if the connection has gone away.
+    finally:
+        port.close()

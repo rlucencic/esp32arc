@@ -201,3 +201,12 @@ at `/tmp/acorn-single-block-2026-11-06`; no generated files are added here.
 The restored A3020 check after the single-register experiment measured
 49.9988 FPS over 30 seconds.
 The desktop screenshot was verified and the serial port closed.
+
+A subsequent [direct frame-cycle comparison](frame-cycle-measurement-2026-11-06.md)
+re-tested these same single-register paths with an identical opt-in timing
+hook in both builds. Mean whole-machine frame-call cost rose from
+4,814,738.574 to 4,854,941.346 cycles (+0.835%), while guest instructions per
+frame differed by -0.038%. All five candidate windows exceeded all five
+baseline windows. The direct measurement supports retaining the rejection;
+its whole-frame cycle metric is distinct from sampled ARM2 CPU residency.
+The fast paths were again reverted, and the measurement facility retained.

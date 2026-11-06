@@ -14,6 +14,9 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "esp_heap_caps.h"
+#include "esp_cpu.h"
+#include "esp_clk_tree.h"
+#include "esp_timer.h"
 #include "esp_log.h"
 #include "esp_memory_utils.h"
 #include "emu/console.h"
@@ -588,6 +591,94 @@ static void status(emu_json_t *j, int section)
     }
 }
 
+/* ---- Opt-in frame-call timing (outside ARM2, including interrupts/preemption) ---- */
+
+typedef struct {
+    bool running;
+    uint32_t id, requested, frames, cpu_hz, min_cycles, max_cycles, invalid_frames;
+    uint64_t cycles, wall_us, insns;
+} frame_cycles_t;
+
+static portMUX_TYPE s_cycles_lock = portMUX_INITIALIZER_UNLOCKED;
+static frame_cycles_t s_cycles;
+
+static void run_frame(void)
+{
+    portENTER_CRITICAL(&s_cycles_lock);
+    bool measure = s_cycles.running;
+    uint32_t id = s_cycles.id, hz = s_cycles.cpu_hz;
+    portEXIT_CRITICAL(&s_cycles_lock);
+    if (!measure) {
+        arc_run_frame();
+        return;
+    }
+    int64_t start_us = esp_timer_get_time();
+    uint32_t start = esp_cpu_get_cycle_count();
+    arc_run_frame();
+    uint32_t cycles = esp_cpu_get_cycle_count() - start;
+    uint64_t wall_us = (uint64_t)(esp_timer_get_time() - start_us);
+    arc_status_t status;
+    arc_get_status(&status);
+    portENTER_CRITICAL(&s_cycles_lock);
+    if (s_cycles.running && s_cycles.id == id) {
+        s_cycles.frames++;
+        s_cycles.cycles += cycles;
+        s_cycles.wall_us += wall_us;
+        s_cycles.insns += status.insns;
+        if (cycles < s_cycles.min_cycles) s_cycles.min_cycles = cycles;
+        if (cycles > s_cycles.max_cycles) s_cycles.max_cycles = cycles;
+        /* Unsigned subtraction handles a counter rollover; a whole counter
+         * period within one call cannot be recovered, so flag that frame. */
+        if (wall_us >= (UINT64_C(1) << 32) * 1000000 / hz) s_cycles.invalid_frames++;
+        if (s_cycles.frames == s_cycles.requested) s_cycles.running = false;
+    }
+    portEXIT_CRITICAL(&s_cycles_lock);
+}
+
+static void cycle_command(const char *arg)
+{
+    while (*arg == ' ') arg++;
+    unsigned frames = 0;
+    char extra;
+    bool stop = strcmp(arg, "stop") == 0;
+    if (*arg && !stop && (sscanf(arg, "%u %c", &frames, &extra) != 1 || frames < 1 || frames > 1000)) {
+        emu_console_printf("EMUCYCLES {\"error\":\"use C [1..1000|stop]\"}\n");
+        return;
+    }
+    uint32_t hz = 0;
+    if (esp_clk_tree_src_get_freq_hz(SOC_MOD_CLK_CPU, ESP_CLK_TREE_SRC_FREQ_PRECISION_CACHED, &hz) != ESP_OK || !hz) {
+        emu_console_printf("EMUCYCLES {\"error\":\"CPU frequency unavailable\"}\n");
+        return;
+    }
+    portENTER_CRITICAL(&s_cycles_lock);
+    bool busy = frames && s_cycles.running;
+    if (stop) s_cycles.running = false;
+    if (frames && !busy) {
+        uint32_t id = s_cycles.id + 1;
+        s_cycles = (frame_cycles_t){ .running = true, .id = id, .requested = frames,
+                                    .cpu_hz = hz, .min_cycles = UINT32_MAX };
+    }
+    frame_cycles_t result = s_cycles;
+    portEXIT_CRITICAL(&s_cycles_lock);
+    if (busy) {
+        emu_console_printf("EMUCYCLES {\"error\":\"busy\"}\n");
+        return;
+    }
+    const char *state = !result.requested ? "idle" : result.running ? "running" :
+                        result.frames == result.requested ? "done" : "stopped";
+    /* Compact keys keep even maximum-width counters within console printf's
+     * 256-byte line buffer (at most 247 bytes including the newline). */
+    emu_console_printf("EMUCYCLES {\"state\":\"%s\",\"id\":%lu,\"requested\":%lu,\"frames\":%lu,"
+                       "\"hz\":%lu,\"now_hz\":%lu,\"cycles\":%llu,\"us\":%llu,"
+                       "\"insns\":%llu,\"min\":%lu,\"max\":%lu,\"invalid\":%lu}\n",
+                       state, (unsigned long)result.id, (unsigned long)result.requested,
+                       (unsigned long)result.frames, (unsigned long)result.cpu_hz, (unsigned long)hz,
+                       (unsigned long long)result.cycles, (unsigned long long)result.wall_us,
+                       (unsigned long long)result.insns,
+                       (unsigned long)(result.frames ? result.min_cycles : 0),
+                       (unsigned long)result.max_cycles, (unsigned long)result.invalid_frames);
+}
+
 /* ---- Console ---- */
 
 static void console_info(char *buf, size_t len)
@@ -599,7 +690,8 @@ static void console_info(char *buf, size_t len)
              (unsigned long)s.pc, modes[s.psr & 3], (unsigned long)s.insns, s.width, s.height, s.bpp);
 }
 
-/*   k <hex>            tap Archimedes key <hex> (e.g. 47 Return)
+/*   C [frames|stop]    capture 1..1000 frame calls, query, or stop (developer timing)
+ *   k <hex>            tap Archimedes key <hex> (e.g. 47 Return)
  *   K <hex> <0|1>      key down (1) or up (0)
  *   m <dx> <dy> <btn>  move the mouse; buttons 1 Select, 2 Menu, 4 Adjust
  *   P <x> <y> <btn>    the pointer to screen position x, y with those buttons
@@ -611,6 +703,9 @@ static void console_info(char *buf, size_t len)
 static bool console_command(const char *line)
 {
     switch (line[0]) {
+    case 'C':
+        cycle_command(line + 1);
+        return true;
     case 'k': {
         unsigned code = strtoul(line + 1, NULL, 16);
         arc_key(code, true);
@@ -690,7 +785,7 @@ static const emu_machine_t machine = {
     .reserve_memory = reserve_memory,
     .start = start,
     .reset = arc_reset,
-    .run_frame = arc_run_frame,
+    .run_frame = run_frame,
     .screen_mode = screen_mode,
     .screen_signature = arc_screen_signature,
     .render_line = arc_render_line_rgb565,
