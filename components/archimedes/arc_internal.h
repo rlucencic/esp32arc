@@ -187,6 +187,7 @@ extern vidc_t vidc;
 
 void vidc_reset(void);
 void vidc_write(uint32_t value);
+void vidc_set_clock(uint32_t khz);      /* the IOEB's VIDC clock selection */
 uint32_t vidc_line_ticks(uint32_t *frac);   /* a line of the current mode, in ticks */
 bool vidc_hsync(void);                  /* in the horizontal sync pulse now */
 void vidc_line_end(void);               /* the raster's line is over */

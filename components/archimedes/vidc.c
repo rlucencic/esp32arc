@@ -87,33 +87,36 @@ static uint16_t rgb565(uint32_t p)
  * divisions are library calls on the board, and this runs every line.
  */
 static uint32_t s_line_whole;           /* a line's whole ticks (vidc_line_ticks()) */
+static uint32_t s_line_rem, s_line_den = 1;
+
+/* Timing inputs change only on reset, HCR/control writes and IOEB clock
+ * writes. Refresh here so line/status reads never mutate the cache. */
+static void line_timing_changed(void)
+{
+    static const uint8_t mul[4] = { 1, 1, 2, 1 }, div[4] = { 3, 2, 3, 1 };
+    uint32_t hcr = (uint32_t)RAW(0x80) * 2 + 2;
+    if (hcr < 64) {
+        s_line_whole = (uint32_t)US(64);  /* not set up yet: a TV's 64 us */
+        s_line_rem = 0;
+        s_line_den = 1;
+    } else {
+        uint32_t num = hcr * arc.tick_mhz * 1000 * div[vidc.pixel_rate];
+        s_line_den = vidc.clock_khz * mul[vidc.pixel_rate];
+        s_line_whole = num / s_line_den;
+        s_line_rem = num % s_line_den;
+    }
+}
+
+void vidc_set_clock(uint32_t khz)
+{
+    vidc.clock_khz = khz;
+    line_timing_changed();
+}
 
 uint32_t vidc_line_ticks(uint32_t *frac)
 {
-    static const uint8_t mul[4] = { 1, 1, 2, 1 }, div[4] = { 3, 2, 3, 1 };
-    /* Worked out again only when what it depends on changes */
-    static uint32_t hcr_was, clock_was, mhz_was, rem, den = 1;
-    static int rate_was;
-    uint32_t whole = s_line_whole;
-    uint32_t hcr = (uint32_t)RAW(0x80) * 2 + 2;
-    if (hcr != hcr_was || vidc.clock_khz != clock_was || vidc.pixel_rate != rate_was || arc.tick_mhz != mhz_was) {
-        hcr_was = hcr;
-        clock_was = vidc.clock_khz;
-        rate_was = vidc.pixel_rate;
-        mhz_was = arc.tick_mhz;
-        if (hcr < 64) {
-            whole = (uint32_t)US(64);   /* not set up yet: a TV's 64 us */
-            rem = 0;
-            den = 1;
-        } else {
-            uint32_t num = hcr * arc.tick_mhz * 1000 * div[vidc.pixel_rate];
-            den = vidc.clock_khz * mul[vidc.pixel_rate];
-            whole = num / den;
-            rem = num % den;
-        }
-        s_line_whole = whole;
-    }
-    uint32_t f = *frac + rem, t = whole;
+    uint32_t den = s_line_den;
+    uint32_t f = *frac + s_line_rem, t = s_line_whole;
     if (f >= den) {
         f -= den;
         t++;
@@ -145,6 +148,7 @@ void vidc_reset(void)
     vidc.stop_at = vidc.line_end;
     vidc.hz100 = 5000;
     vidc.clock_khz = 24000;
+    line_timing_changed();
 }
 
 void vidc_dma_changed(void)
@@ -181,6 +185,9 @@ void vidc_write(uint32_t v)
     } else if (reg == 0xE0) {
         vidc.pixel_rate = value & 3;
         vidc.bpp_log = (value >> 2) & 3;
+    }
+    if (reg == 0x80 || reg == 0xE0) {
+        line_timing_changed();
     }
 }
 

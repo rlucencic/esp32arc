@@ -37,7 +37,7 @@ static void ioeb_write(uint32_t a, uint8_t v)
 {
     static const uint16_t khz[4] = { 24000, 25175, 36000, 24000 };
     if ((a & 0xF8) == 0x48) {
-        vidc.clock_khz = khz[v & 3];
+        vidc_set_clock(khz[v & 3]);
     }
 }
 
