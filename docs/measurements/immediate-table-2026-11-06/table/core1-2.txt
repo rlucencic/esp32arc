@@ -1,0 +1,26 @@
+32000 samples, core 1
+ 89.6%  arm2_run
+  4.3%  vidc_line_end
+  2.4%  sound_run
+  1.2%  vidc_line_ticks
+  0.5%  arc_run_frame
+  0.3%  keyboard_event (keyboard.c)
+  0.3%  switch_mode
+  0.2%  esp_crosscore_int_send
+  0.2%  memcpy (memcpy.c)
+  0.1%  vPortExitCriticalMultiCore
+  0.1%  enter_mode
+  0.1%  bus_write
+  0.1%  arc_update_interrupts
+  0.1%  ioc_event
+  0.1%  bus_read
+  0.1%  vidc_write
+  0.1%  memc_write_register
+  0.0%  rgb565
+  0.0%  ioc_write
+  0.0%  ioc_read
+  0.0%  emudbg_frame_end
+  0.0%  ioc_next_event
+  0.0%  xTaskGenericNotify
+  0.0%  picture_ready
+  0.0%  ioc_irqb

@@ -1,0 +1,36 @@
+diff --git a/components/arm2/arm2.c b/components/arm2/arm2.c
+index 768a1e0..afc902c 100644
+--- a/components/arm2/arm2.c
++++ b/components/arm2/arm2.c
+@@ -368,6 +368,22 @@ uint8_t arm2_peek8(const arm2_t *c, uint32_t addr)
+  */
+ enum { OP2_IMM, OP2_SHIFT_IMM, OP2_SHIFT_REG, OP2_PLAIN };
+ 
++/* Decode all ARM immediate byte/rotate combinations in internal RAM. */
++#define IMM_ROR(v, n) (((uint32_t)(v) >> (n)) | ((uint32_t)(v) << ((32 - (n)) & 31)))
++#define IMM4(b, n) IMM_ROR(b, n), IMM_ROR((b) + 1, n), IMM_ROR((b) + 2, n), IMM_ROR((b) + 3, n)
++#define IMM16(b, n) IMM4(b, n), IMM4((b) + 4, n), IMM4((b) + 8, n), IMM4((b) + 12, n)
++#define IMM64(b, n) IMM16(b, n), IMM16((b) + 16, n), IMM16((b) + 32, n), IMM16((b) + 48, n)
++#define IMM256(n) IMM64(0, n), IMM64(64, n), IMM64(128, n), IMM64(192, n)
++static const uint32_t s_immediate[4096] = {
++    IMM256(0), IMM256(2), IMM256(4), IMM256(6), IMM256(8), IMM256(10), IMM256(12), IMM256(14),
++    IMM256(16), IMM256(18), IMM256(20), IMM256(22), IMM256(24), IMM256(26), IMM256(28), IMM256(30)
++};
++#undef IMM256
++#undef IMM64
++#undef IMM16
++#undef IMM4
++#undef IMM_ROR
++
+ /* Operand 2 of a data processing instruction (`form` a constant where
+  * it's inlined); *carry its carry out. `pc` the instruction's address.
+  * For OP2_SHIFT_IMM, dispatch supplies nonzero bits 4-11 in `shift`,
+@@ -378,7 +394,7 @@ static INLINE uint32_t operand2(arm2_t *c, run_t *r, uint32_t op, uint32_t pc, u
+ {
+     if (form == OP2_IMM) {
+         unsigned rot = (op >> 7) & 0x1E;
+-        uint32_t v = ror32(op & 0xFF, rot);
++        uint32_t v = s_immediate[op & 0xFFF];
+         *carry = rot ? v >> 31 : (c->psr >> 29) & 1;
+         return v;
+     }

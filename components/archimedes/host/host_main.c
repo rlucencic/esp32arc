@@ -313,7 +313,7 @@ static const char *const s_mix_names[MIX_KINDS] = {
     "  (of those, setting flags)", "MUL, MLA", "LDR", "STR", "LDRB", "STRB", "LDM", "STM", "B", "BL", "SWI", "other",
 };
 static uint64_t s_mix[MIX_KINDS], s_mix_regs[2], s_mix_total;
-static uint64_t s_mix_plain[2], s_mix_conditions[3];
+static uint64_t s_mix_plain[2], s_mix_conditions[3], s_mix_rotated_immediate;
 static uint64_t s_mix_lists[2][65536];
 
 static void mix_count(const arm2_t *c, uint32_t op)
@@ -360,6 +360,7 @@ static void mix_count(const arm2_t *c, uint32_t op)
         return;
     case 1:
         s_mix[MIX_DP_IMM]++;
+        if (op & 0xF00) s_mix_rotated_immediate++;
         if (op & (1u << 20)) {
             s_mix[MIX_DP_S]++;
         }
@@ -423,6 +424,9 @@ static void mix_print(void)
                    100.0 * (double)count / (double)s_mix[load ? MIX_LDM : MIX_STM]);
         }
     }
+    printf("host: rotated immediate operands: %llu (%.1f%% of immediate operands)\n",
+           (unsigned long long)s_mix_rotated_immediate,
+           s_mix[MIX_DP_IMM] ? 100.0 * (double)s_mix_rotated_immediate / (double)s_mix[MIX_DP_IMM] : 0.0);
     uint64_t plain = s_mix_plain[0] + s_mix_plain[1];
     printf("host: unshifted register operands: %llu (%.1f%% of register operands, %.1f%% of all instructions)\n",
            (unsigned long long)plain, s_mix[MIX_DP_REG] ? 100.0 * (double)plain / (double)s_mix[MIX_DP_REG] : 0.0,

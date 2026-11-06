@@ -1,0 +1,8 @@
+{
+  "symbol": "s_immediate",
+  "address": "0x4ff44100",
+  "section": ".dram1.data",
+  "bytes": 16384,
+  "entries_verified": 4096,
+  "sha256": "8fff73e4452cab732d7e5272994976b66e07341533c8b1e5e7e2669eed2dd87e"
+}

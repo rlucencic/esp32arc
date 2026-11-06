@@ -1,0 +1,2 @@
+I (1307) cpu_start: cpu freq: 360000000 Hz
+I (1336) main: RAM ok, ROM ok, page table in internal RAM

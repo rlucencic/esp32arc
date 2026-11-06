@@ -1,0 +1,12 @@
+Starting A440
+EMUINFO Archimedes running mode 640x256 50 Hz signature cac86ddc frames 421 PC &3830BEC SVC insns 32173 screen 640x256 4 bpp
+Traceback (most recent call last):
+  File "/home/robert/Development/esp32arc/tools/measure_lander.py", line 69, in <module>
+    raise RuntimeError('Lander video mode missing: ' + state['info'])
+RuntimeError: Lander video mode missing: EMUINFO Archimedes running mode 640x256 50 Hz signature 2b1fc7f0 frames 693 PC &38CADD8 SVC insns 29998 screen 640x256 4 bpp
+Traceback (most recent call last):
+  File "/tmp/acorn-popcount-2026-11-06/a440.py", line 33, in <module>
+    subprocess.run([sys.executable,'/home/robert/Development/esp32arc/tools/measure_lander.py','/dev/ttyACM1',str(out/'timing.json'),'--seconds','30'],check=True)
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/home/robert/.espressif/tools/python/v5.5.6/venv/bin/python', '/home/robert/Development/esp32arc/tools/measure_lander.py', '/dev/ttyACM1', '/tmp/acorn-immediate-table-2026-11-06/table/a440/timing.json', '--seconds', '30']' returned non-zero exit status 1.

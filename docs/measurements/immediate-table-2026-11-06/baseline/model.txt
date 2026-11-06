@@ -1,0 +1,1 @@
+I (336891) emu: 50.0 fps (100% of 50 Hz) frames 15049 PC &3871A68I (1640794) main: A440, RISC OS 3.11 (29 Sep 1992), 4096 KB
