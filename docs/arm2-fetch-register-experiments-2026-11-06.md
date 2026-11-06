@@ -1,6 +1,6 @@
-# ARM2 fetch and register-selection experiments
+# ARM2 fetch, register-selection and PC/PSR experiments
 
-Date: 2026-11-06. All three candidates below were rejected. The original
+Date: 2026-11-06. All four candidates below were rejected. The original
 core and exact saved baseline firmware were restored after testing.
 
 ## Profile and method
@@ -63,6 +63,40 @@ passed 190 existing checks, 100,000 Unicorn cases (seed 1), and 256 extra
 assertions covering all 16 Rn fields, four operand forms, both S bits,
 a poisoned stored R15, result values and the guest PC.
 
+## Shared PC/PSR write paths
+
+The next candidate made `run_write_psr` a shared noinline/noclone internal-RAM
+helper and outlined data-processing writes to PC into a second helper.
+It retained the original PSR privilege rules, refresh logic and guest cycles.
+`arm2_run` shrank to 30,388 bytes; the helpers added 340 and 44 bytes, for
+30,772 combined bytes (12,382 fewer than baseline). The compiler also
+merged more dispatch tails: 35 indirect jump sites versus 88 in baseline.
+
+| Build | Combined ARM2 residency samples (%) | Mean (%) | FPS |
+| --- | --- | ---: | ---: |
+| Fresh baseline | 68.9, 68.7, 68.8, 68.2, 68.8 | 68.68 | 50.0199 |
+| Shared helpers | 72.9, 72.9, 72.6, 73.4, 72.9 | 72.94 | 50.0001 |
+
+Candidate totals include `arm2_run`, `run_write_psr`, and
+`data_processing_pc`; moved work is not counted as saved time. Rounded
+helper samples contribute 0.7–0.9 percentage points per capture. CPU use
+increased 4.26 percentage points (6.20% relatively). Rejected: reduced code
+size did not translate into reduced CPU demand. The measurements do not
+isolate the contribution of call overhead, register allocation or dispatch
+merging.
+
+The candidate passed 190 existing checks, 100,000 Unicorn cases (seed 1),
+and 40,960 baseline/candidate state comparisons covering all sixteen
+opcodes, both S bits, four operand forms, four CPU modes, all sixteen
+initial NZCV combinations and five operand values. Comparisons included
+PC, PSR, condition mask, pending interrupts, executable page, permissions,
+cycle return, remaining ticks, accumulated ticks, instruction count, live
+registers and all banked registers. Newly enabled interrupts were entered
+in a subsequent run. Both state traces have SHA256
+`bf7eddb06d216f9d64c2ebb73f64c14852e28759537bdc078ed13b765632d598`.
+The deterministic host replay also matched. Original core and baseline
+firmware restored; scratch evidence is in `/tmp/acorn-pc-outline-2026-11-06`.
+
 ## Replay and restoration
 
 Each candidate preserved the deterministic A3020 host Lander replay:
@@ -74,7 +108,9 @@ The restored P4 `arm2_run` is 43,154 bytes with SHA256
 The exact saved baseline app SHA256 is
 `530d5a1051343cf3c6f60f83abe0b4be16c9f032470d084f94a7ec821c7d0205`.
 Restored A3020 Lander measured 49.9949 FPS after the fetch experiment and
-49.9987 FPS after the register experiments. Both sessions ended at the
+49.9987 FPS after the register experiments. After the PC/PSR experiment,
+restored A3020 Lander measured 50.0323 FPS in the same short timing check.
+All sessions ended at the
 640×480 desktop with the serial port closed.
 
 Raw profiles, temporary fixtures and rejected patches remain outside the
@@ -83,6 +119,6 @@ repositories under `/tmp/acorn-fetch-pointer-2026-11-06` and
 archives. The measurements needed to assess the conclusions are recorded
 above. No ROMs, disk images, private boot logs or generated builds are added.
 
-Next candidate: share rare data-processing PC/PSR write paths to reduce
-handler duplication. Code-size savings alone will not justify retaining it;
-correctness and hardware measurements remain required.
+Further outlining experiments should isolate PSR updates from PC writes;
+the combined rewrite above regressed. Code-size savings alone do not
+justify retaining a change.
