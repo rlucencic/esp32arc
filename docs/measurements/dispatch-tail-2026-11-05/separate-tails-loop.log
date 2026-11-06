@@ -1,0 +1,14 @@
+I (157070) emu: 35.0 fps (70% of 50 Hz) frames 6644 PC &2000078 SVC insns 116569 screen 640x256 1 bpp
+I (162082) emu: 50.0 fps (100% of 50 Hz) frames 6896 PC &396A2F0 SVC insns 32025 screen 640x480 4 bpp
+I (167083) emu: 50.0 fps (100% of 50 Hz) frames 7146 PC &38FD98C SVC insns 32205 screen 640x480 4 bpp
+I (172084) emu: 50.0 fps (100% of 50 Hz) frames 7396 PC &3803F04 SVC insns 33700 screen 640x480 4 bpp
+I (177099) emu: 50.0 fps (100% of 50 Hz) frames 7647 PC &3871A80 SVC insns 35711 screen 640x480 4 bpp
+I (182100) emu: 50.0 fps (100% of 50 Hz) frames 7897 PC &3871A70 SVC insns 35558 screen 640x480 4 bpp
+I (187101) emu: 50.0 fps (100% of 50 Hz) frames 8147 PC &38C2610 SVC insns 30041 screen 640x480 4 bpp
+I (192102) emu: 50.0 fps (100% of 50 Hz) frames 8397 PC &38249A0 SVC insns 30865 screen 640x480 4 bpp
+I (197103) emu: 50.0 fps (100% of 50 Hz) frames 8647 PC &3824844 SVC insns 30099 screen 640x480 4 bpp
+I (202105) emu: 50.0 fps (100% of 50 Hz) frames 8897 PC &38C2318 SVC insns 30049 screen 640x480 4 bpp
+I (207111) emu: 51.0 fps (102% of 50 Hz) frames 9148 PC &3823B34 SVC insns 30049 screen 640x480 4 bpp
+I (212112) emu: 50.0 fps (100% of 50 Hz) frames 9398 PC &3824850 SVC insns 30789 screen 640x480 4 bpp
+I (217113) emu: 50.0 fps (100% of 50 Hz) frames 9647 PC &0008FA4 USR insns 89465 screen 640x480 4 bpp
+I (222114) emu: 50.0 fps (100% of 50 Hz) frames 9897 PC &0008F9C USR insns 89265 screen 640x480 4 bpp

@@ -1,0 +1,21 @@
+I (19226) emu: Free internal: 39607 bytes, PSRAM: 19751544 bytes
+I (21903) emu: 49.0 fps (98% of 50 Hz) frames 121 PC &3813380 SVC insns 36365 screen 640x256 1 bpp
+I (26916) emu: 50.0 fps (100% of 50 Hz) frames 372 PC &380B630 SVC insns 34578 screen 640x480 4 bpp
+I (31929) emu: 50.4 fps (101% of 50 Hz) frames 623 PC &38CC4E4 SVC insns 33866 screen 640x480 4 bpp
+I (36994) emu: 48.9 fps (98% of 50 Hz) frames 875 PC &38C32AC SVC insns 46075 screen 640x480 4 bpp
+I (41995) emu: 50.0 fps (100% of 50 Hz) frames 1126 PC &3871A78 SVC insns 35553 screen 640x480 4 bpp
+I (46996) emu: 50.0 fps (100% of 50 Hz) frames 1376 PC &38E6050 SVC insns 30304 screen 640x480 4 bpp
+I (52039) emu: 48.0 fps (96% of 50 Hz) frames 1626 PC &0009260 USR insns 76710 screen 320x256 8 bpp
+I (57040) emu: 48.0 fps (96% of 50 Hz) frames 1864 PC &000A4C8 USR insns 83000 screen 320x256 8 bpp
+I (62041) emu: 48.0 fps (96% of 50 Hz) frames 2104 PC &0008338 USR insns 106739 screen 320x256 8 bpp
+I (67045) emu: 48.0 fps (96% of 50 Hz) frames 2343 PC &0008134 USR insns 76350 screen 320x256 8 bpp
+I (72048) emu: 48.0 fps (96% of 50 Hz) frames 2583 PC &000812C USR insns 74756 screen 320x256 8 bpp
+I (77051) emu: 47.0 fps (94% of 50 Hz) frames 2822 PC &000A080 USR insns 77231 screen 320x256 8 bpp
+I (82052) emu: 48.0 fps (96% of 50 Hz) frames 3062 PC &0009788 USR insns 77132 screen 320x256 8 bpp
+I (87053) emu: 48.0 fps (96% of 50 Hz) frames 3301 PC &0009310 USR insns 102929 screen 320x256 8 bpp
+I (92055) emu: 48.0 fps (96% of 50 Hz) frames 3541 PC &3816F50 USR insns 83599 screen 320x256 8 bpp
+I (97057) emu: 48.0 fps (96% of 50 Hz) frames 3780 PC &00097C4 USR insns 99665 screen 320x256 8 bpp
+I (102061) emu: 47.0 fps (94% of 50 Hz) frames 4019 PC &0009F50 USR insns 72356 screen 320x256 8 bpp
+I (107062) emu: 48.0 fps (96% of 50 Hz) frames 4259 PC &000A568 USR insns 90660 screen 320x256 8 bpp
+I (112063) emu: 48.0 fps (96% of 50 Hz) frames 4498 PC &00097E8 USR insns 72030 screen 320x256 8 bpp
+I (117064) emu: 48.0 fps (96% of 50 Hz) frames 4738 PC &0008218 USR insns 74432 screen 320x256 8 bpp

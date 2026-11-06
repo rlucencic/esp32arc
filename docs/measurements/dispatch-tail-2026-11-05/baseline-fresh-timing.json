@@ -1,0 +1,18 @@
+{
+  "start": {
+    "time": 59739.638907882,
+    "latency": 0.003081269998801872,
+    "frames": 2092,
+    "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature 209d362d frames 2092 PC &0009F40 USR insns 70075 screen 320x256 8 bpp"
+  },
+  "end": {
+    "time": 59799.7336092895,
+    "latency": 0.0022728530020685866,
+    "frames": 5097,
+    "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature 40649928 frames 5097 PC &00097C0 USR insns 75147 screen 320x256 8 bpp"
+  },
+  "elapsed": 60.09470140749909,
+  "frames": 3005,
+  "fps": 50.0044085355088,
+  "speed_percent": 100.0088170710176
+}

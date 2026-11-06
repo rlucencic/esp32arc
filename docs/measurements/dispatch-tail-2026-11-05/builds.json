@@ -1,0 +1,30 @@
+{
+  "no-crossjumping": {
+    "arm2_run_bytes": 42596,
+    "arm2_run_address": "0x4ff0236c",
+    "arm2_run_sha256": "ef5267c2f0f9067a95317753908f38f10e42d18b536fd94db734167753499caf",
+    "app_sha256": "d9b4492df00e5ff16f88cb6e6c677e9b12ef90523ca49b099d320469bb2b1fe3",
+    "indirect_jump_sites": 138
+  },
+  "final": {
+    "arm2_run_bytes": 38478,
+    "arm2_run_address": "0x4ff02368",
+    "arm2_run_sha256": "e1a3d30425ef084b99b5f91c0885cac9c2e6c7785bf2300e2fb4d4562f95c8a6",
+    "app_sha256": "112e22535b019dc4b45f1135f0870bfa827ca6f8f4a34a219a0a2f9a54f112fd",
+    "indirect_jump_sites": 66
+  },
+  "separate-tails": {
+    "arm2_run_bytes": 44338,
+    "arm2_run_address": "0x4ff0236c",
+    "arm2_run_sha256": "aa5e67da8638004024ee052166cc44fb12c0609b39a897bfe288b5efd3ddd7a0",
+    "app_sha256": "1550f4b3e320398846547e30755b4b55afb8f37d65f18472a3865b973324a333",
+    "indirect_jump_sites": 138
+  },
+  "baseline": {
+    "arm2_run_bytes": 38478,
+    "arm2_run_address": "0x4ff02368",
+    "arm2_run_sha256": "e1a3d30425ef084b99b5f91c0885cac9c2e6c7785bf2300e2fb4d4562f95c8a6",
+    "app_sha256": "ec21624045db7100bec30d6a12b9f92404067bf726c699c7f45819ae07d1d4be",
+    "indirect_jump_sites": 66
+  }
+}

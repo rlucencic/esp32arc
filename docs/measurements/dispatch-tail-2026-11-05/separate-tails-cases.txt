@@ -1,0 +1,7 @@
+make: Entering directory '/home/robert/Development/esp32emu/components/arm2/test'
+cc -O2 -g -Wall -Wextra -Wno-unused-parameter -I../include -I../../emudbg/include -DEMUDBG_OFF -fno-crossjumping -fno-gcse cases.c ../arm2.c ../arm2_dis.c -o build/cases
+cc -O2 -g -Wall -Wextra -Wno-unused-parameter -I../include -I../../emudbg/include -DEMUDBG_OFF -fno-crossjumping -fno-gcse -shared -fPIC diff_lib.c ../arm2.c ../arm2_dis.c -o build/libarm2.so
+cc -O2 -g -Wall -Wextra -Wno-unused-parameter -I../include -I../../emudbg/include -DEMUDBG_OFF -fno-crossjumping -fno-gcse bench.c ../arm2.c ../arm2_dis.c -o build/bench
+build/cases
+190 of 190 checks passed
+make: Leaving directory '/home/robert/Development/esp32emu/components/arm2/test'

@@ -1,0 +1,1 @@
+EMUINFO Archimedes running mode 640x480 50 Hz signature 77652cbc frames 7227 PC &3871A78 SVC insns 35993 screen 640x480 4 bpp

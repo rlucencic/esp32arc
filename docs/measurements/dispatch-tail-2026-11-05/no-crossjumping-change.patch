@@ -1,0 +1,13 @@
+diff --git a/components/arm2/CMakeLists.txt b/components/arm2/CMakeLists.txt
+index be150fe..99a384c 100644
+--- a/components/arm2/CMakeLists.txt
++++ b/components/arm2/CMakeLists.txt
+@@ -8,3 +8,8 @@ idf_component_register(SRCS "arm2.c" "arm2_dis.c" "arm2_dbg.c"
+ # IDF turns them off for code that may run with the flash cache disabled;
+ # the emulation task never does: flash writes stall it)
+ target_compile_options(${COMPONENT_LIB} PRIVATE -O2 -fjump-tables -ftree-switch-conversion)
++
++# Experiment: preserve computed-goto dispatch sites for the P4 predictor.
++if(IDF_TARGET STREQUAL "esp32p4")
++    target_compile_options(${COMPONENT_LIB} PRIVATE -fno-crossjumping)
++endif()

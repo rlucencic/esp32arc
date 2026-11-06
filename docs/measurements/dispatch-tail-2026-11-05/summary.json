@@ -1,0 +1,84 @@
+{
+  "baseline": {
+    "lander": {
+      "start": {
+        "time": 59739.638907882,
+        "latency": 0.003081269998801872,
+        "frames": 2092,
+        "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature 209d362d frames 2092 PC &0009F40 USR insns 70075 screen 320x256 8 bpp"
+      },
+      "end": {
+        "time": 59799.7336092895,
+        "latency": 0.0022728530020685866,
+        "frames": 5097,
+        "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature 40649928 frames 5097 PC &00097C0 USR insns 75147 screen 320x256 8 bpp"
+      },
+      "elapsed": 60.09470140749909,
+      "frames": 3005,
+      "fps": 50.0044085355088,
+      "speed_percent": 100.0088170710176
+    }
+  },
+  "separate-tails": {
+    "lander": {
+      "start": {
+        "time": 59908.216324211506,
+        "latency": 0.0023734229980618693,
+        "frames": 2067,
+        "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature 79dc9b8d frames 2067 PC &000979C USR insns 74740 screen 320x256 8 bpp"
+      },
+      "end": {
+        "time": 59968.3086981795,
+        "latency": 0.0023148949985625222,
+        "frames": 4944,
+        "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature be0c9650 frames 4944 PC &000A548 USR insns 102283 screen 320x256 8 bpp"
+      },
+      "elapsed": 60.0923739679929,
+      "frames": 2877,
+      "fps": 47.87629128335621,
+      "speed_percent": 95.75258256671242
+    },
+    "loop_arm2_percent": [
+      63.4,
+      63.2,
+      63.7
+    ],
+    "loop_arm2_mean_percent": 63.43333333333334,
+    "lander_relative_change_percent": -4.255859262171624
+  },
+  "no-crossjumping": {
+    "lander": {
+      "start": {
+        "time": 60165.6336233935,
+        "latency": 0.002264606999233365,
+        "frames": 2089,
+        "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature 209d362d frames 2089 PC &0009F58 USR insns 84835 screen 320x256 8 bpp"
+      },
+      "end": {
+        "time": 60225.7372902025,
+        "latency": 0.002182402997277677,
+        "frames": 5083,
+        "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature e26380ba frames 5083 PC &000A568 USR insns 73172 screen 320x256 8 bpp"
+      },
+      "elapsed": 60.10366680900188,
+      "frames": 2994,
+      "fps": 49.8139324762725,
+      "speed_percent": 99.627864952545
+    },
+    "loop_arm2_percent": [
+      59.5,
+      59.7,
+      60.0
+    ],
+    "loop_arm2_mean_percent": 59.73333333333333,
+    "lander_relative_change_percent": -0.380918532615071
+  },
+  "final": {
+    "loop_arm2_percent": [
+      56.8,
+      57.0,
+      56.6
+    ],
+    "loop_arm2_mean_percent": 56.800000000000004
+  }
+}
