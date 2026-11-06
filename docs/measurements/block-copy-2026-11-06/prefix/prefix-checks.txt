@@ -1,0 +1,1 @@
+8192 prefix-list cases agree with committed core (registers, PC, NZCV, exception, all RAM)

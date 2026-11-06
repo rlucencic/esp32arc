@@ -314,6 +314,7 @@ static const char *const s_mix_names[MIX_KINDS] = {
 };
 static uint64_t s_mix[MIX_KINDS], s_mix_regs[2], s_mix_total;
 static uint64_t s_mix_plain[2];
+static uint64_t s_mix_lists[2][65536];
 
 static void mix_count(const arm2_t *c, uint32_t op)
 {
@@ -369,6 +370,7 @@ static void mix_count(const arm2_t *c, uint32_t op)
         bool load = (op >> 20) & 1;
         s_mix[load ? MIX_LDM : MIX_STM]++;
         s_mix_regs[load] += (uint64_t)__builtin_popcount(op & 0xFFFF);
+        s_mix_lists[load][op & 0xFFFF]++;
         return;
     }
     case 5:
@@ -398,6 +400,24 @@ static void mix_print(void)
             printf("  (%.1f registers)", s_mix[k] ? (double)s_mix_regs[k == MIX_LDM] / (double)s_mix[k] : 0.0);
         }
         printf("\n");
+    }
+    for (int load = 0; load < 2; load++) {
+        bool shown[65536] = {false};
+        printf("host: most frequent %s register lists (executed instructions):\n", load ? "LDM" : "STM");
+        for (int rank = 0; rank < 8; rank++) {
+            unsigned best = 0;
+            uint64_t count = 0;
+            for (unsigned list = 0; list < 65536; list++) {
+                if (!shown[list] && s_mix_lists[load][list] > count) {
+                    best = list;
+                    count = s_mix_lists[load][list];
+                }
+            }
+            if (!count) break;
+            shown[best] = true;
+            printf("  %04X %llu (%.1f%%)\n", best, (unsigned long long)count,
+                   100.0 * (double)count / (double)s_mix[load ? MIX_LDM : MIX_STM]);
+        }
     }
     uint64_t plain = s_mix_plain[0] + s_mix_plain[1];
     printf("host: unshifted register operands: %llu (%.1f%% of register operands, %.1f%% of all instructions)\n",

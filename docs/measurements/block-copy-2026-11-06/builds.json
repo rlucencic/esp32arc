@@ -1,0 +1,16 @@
+{
+  "prefix": {
+    "arm2_run_bytes": 43154,
+    "arm2_run_address": "0x4ff02368",
+    "arm2_run_sha256": "05d946e3fad29dab88f699c4c0a8e4586385e594576d7c7d1598809a8b33940d",
+    "app_sha256": "530d5a1051343cf3c6f60f83abe0b4be16c9f032470d084f94a7ec821c7d0205",
+    "indirect_jump_sites": 88
+  },
+  "baseline": {
+    "arm2_run_bytes": 43196,
+    "arm2_run_address": "0x4ff02368",
+    "arm2_run_sha256": "fe80f6cb256b823763b66c447fd37a0ed088be49bcc2fbf052299d843932fcee",
+    "app_sha256": "98b9580e3d8294105ba9864485306472734c1fab1985fea1d0d69da38deddcf3",
+    "indirect_jump_sites": 88
+  }
+}
