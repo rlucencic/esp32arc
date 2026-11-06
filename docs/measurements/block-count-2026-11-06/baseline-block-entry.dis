@@ -1,0 +1,76 @@
+
+baseline/esp32arc.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .iram0.text:
+
+4ff03a4a <arm2_run+0x16e2>:
+4ff03a4a:	deee                	sw	s11,124(sp)
+4ff03a4c:	00b41793          	slli	a5,s0,0xb
+4ff03a50:	0007c463          	bltz	a5,4ff03a58 <arm2_run+0x16f0>
+4ff03a54:	5300106f          	j	4ff04f84 <arm2_run+0x2c1c>
+4ff03a58:	01041d93          	slli	s11,s0,0x10
+4ff03a5c:	010ddd93          	srli	s11,s11,0x10
+4ff03a60:	6695                	lui	a3,0x5
+4ff03a62:	55568693          	addi	a3,a3,1365 # 5555 <CSR_UINTSTATUS+0x48a4>
+4ff03a66:	001dd793          	srli	a5,s11,0x1
+4ff03a6a:	8ff5                	and	a5,a5,a3
+4ff03a6c:	40fd87b3          	sub	a5,s11,a5
+4ff03a70:	668d                	lui	a3,0x3
+4ff03a72:	33368693          	addi	a3,a3,819 # 3333 <CSR_UINTSTATUS+0x2682>
+4ff03a76:	0027d613          	srli	a2,a5,0x2
+4ff03a7a:	8e75                	and	a2,a2,a3
+4ff03a7c:	8ff5                	and	a5,a5,a3
+4ff03a7e:	97b2                	add	a5,a5,a2
+4ff03a80:	0047d693          	srli	a3,a5,0x4
+4ff03a84:	6605                	lui	a2,0x1
+4ff03a86:	97b6                	add	a5,a5,a3
+4ff03a88:	f0f60693          	addi	a3,a2,-241 # f0f <CSR_UINTSTATUS+0x25e>
+4ff03a8c:	8ff5                	and	a5,a5,a3
+4ff03a8e:	0087d693          	srli	a3,a5,0x8
+4ff03a92:	01045613          	srli	a2,s0,0x10
+4ff03a96:	96be                	add	a3,a3,a5
+4ff03a98:	01745593          	srli	a1,s0,0x17
+4ff03a9c:	01545793          	srli	a5,s0,0x15
+4ff03aa0:	01645813          	srli	a6,s0,0x16
+4ff03aa4:	8a3d                	andi	a2,a2,15
+4ff03aa6:	48bd                	li	a7,15
+4ff03aa8:	0017f513          	andi	a0,a5,1
+4ff03aac:	8afd                	andi	a3,a3,31
+4ff03aae:	8985                	andi	a1,a1,1
+4ff03ab0:	00187813          	andi	a6,a6,1
+4ff03ab4:	01845793          	srli	a5,s0,0x18
+4ff03ab8:	01161463          	bne	a2,a7,4ff03ac0 <arm2_run+0x1758>
+4ff03abc:	5840406f          	j	4ff08040 <arm2_run+0x5cd8>
+4ff03ac0:	00261893          	slli	a7,a2,0x2
+4ff03ac4:	98a6                	add	a7,a7,s1
+4ff03ac6:	0008a883          	lw	a7,0(a7)
+4ff03aca:	e199                	bnez	a1,4ff03ad0 <arm2_run+0x1768>
+4ff03acc:	12f0306f          	j	4ff073fa <arm2_run+0x5092>
+4ff03ad0:	00279c13          	slli	s8,a5,0x2
+4ff03ad4:	004c7c13          	andi	s8,s8,4
+4ff03ad8:	00269793          	slli	a5,a3,0x2
+4ff03adc:	9c46                	add	s8,s8,a7
+4ff03ade:	98be                	add	a7,a7,a5
+4ff03ae0:	16068b63          	beqz	a3,4ff03c56 <arm2_run+0x18ee>
+4ff03ae4:	040005b7          	lui	a1,0x4000
+4ff03ae8:	00bc6463          	bltu	s8,a1,4ff03af0 <arm2_run+0x1788>
+4ff03aec:	6d70506f          	j	4ff099c2 <arm2_run+0x765a>
+4ff03af0:	0984a583          	lw	a1,152(s1)
+4ff03af4:	00cc5e13          	srli	t3,s8,0xc
+4ff03af8:	17f1                	addi	a5,a5,-4
+4ff03afa:	002e1313          	slli	t1,t3,0x2
+4ff03afe:	97e2                	add	a5,a5,s8
+4ff03b00:	959a                	add	a1,a1,t1
+4ff03b02:	00c7de93          	srli	t4,a5,0xc
+4ff03b06:	419c                	lw	a5,0(a1)
+4ff03b08:	c901                	beqz	a0,4ff03b18 <arm2_run+0x17b0>
+4ff03b0a:	45bd                	li	a1,15
+4ff03b0c:	00b60663          	beq	a2,a1,4ff03b18 <arm2_run+0x17b0>
+4ff03b10:	060a                	slli	a2,a2,0x2
+4ff03b12:	9626                	add	a2,a2,s1
+4ff03b14:	01162023          	sw	a7,0(a2)
+4ff03b18:	0b44a303          	lw	t1,180(s1)
+4ff03b1c:	4881                	li	a7,0
+4ff03b1e:	00080863          	beqz	a6,4ff03b2e <arm2_run+0x17c6>
+4ff03b22:	00f45893          	srli	a7,s0,0xf

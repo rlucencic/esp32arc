@@ -1,0 +1,26 @@
+32000 samples, core 1
+ 54.9%  esp_cpu_wait_for_intr
+ 42.0%  arm2_run
+  1.8%  sound_run
+  0.5%  vidc_line_end
+  0.2%  vidc_line_ticks
+  0.1%  vPortExitCriticalMultiCore
+  0.1%  arc_run_frame
+  0.1%  memcpy (memcpy.c)
+  0.1%  keyboard_event (keyboard.c)
+  0.0%  switch_mode
+  0.0%  _printf_i
+  0.0%  bus_write
+  0.0%  bus_read
+  0.0%  enter_mode
+  0.0%  xQueueGenericSend
+  0.0%  ioc_next_event
+  0.0%  vidc_write
+  0.0%  ioc_event
+  0.0%  esp_crosscore_int_send
+  0.0%  ioc_read
+  0.0%  sdio_data_to_rx_buf_task
+  0.0%  fdc_next_event
+  0.0%  memc_write_register
+  0.0%  emudbg_frame_end
+  0.0%  keyboard_next_event

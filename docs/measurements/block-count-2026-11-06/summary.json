@@ -1,0 +1,80 @@
+{
+  "baseline": {
+    "block_loop": {
+      "arm2_percent": [
+        42.8,
+        42.7,
+        42.9
+      ],
+      "mean_arm2_percent": 42.800000000000004
+    },
+    "a440_lander": {
+      "arm2_percent": [
+        71.1,
+        70.9,
+        70.9,
+        70.7,
+        70.5
+      ],
+      "mean_arm2_percent": 70.82000000000001
+    },
+    "a440_timing": {
+      "start": {
+        "time": 82351.507178443,
+        "latency": 0.0022546139953192323,
+        "frames": 2619,
+        "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature f608aa16 frames 2619 PC &0009754 USR insns 60086 screen 320x256 8 bpp"
+      },
+      "end": {
+        "time": 82381.54980638699,
+        "latency": 0.002232195998658426,
+        "frames": 4121,
+        "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature 71b80828 frames 4121 PC &000A4C8 USR insns 64877 screen 320x256 8 bpp"
+      },
+      "elapsed": 30.04262794398528,
+      "frames": 1502,
+      "fps": 49.99562630807435,
+      "speed_percent": 99.9912526161487
+    }
+  },
+  "byte-table": {
+    "block_loop": {
+      "arm2_percent": [
+        42.0,
+        42.2,
+        41.7
+      ],
+      "mean_arm2_percent": 41.96666666666667
+    },
+    "a440_lander": {
+      "arm2_percent": [
+        70.1,
+        70.6,
+        69.9,
+        70.0,
+        69.9
+      ],
+      "mean_arm2_percent": 70.1
+    },
+    "a440_timing": {
+      "start": {
+        "time": 82683.8619975605,
+        "latency": 0.002272284997161478,
+        "frames": 2104,
+        "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature 45f1358d frames 2104 PC &000A0A4 USR insns 48055 screen 320x256 8 bpp"
+      },
+      "end": {
+        "time": 82713.9020574085,
+        "latency": 0.0021566989889834076,
+        "frames": 3607,
+        "info": "EMUINFO Archimedes running mode 320x256 50 Hz signature 8c81600b frames 3607 PC &000A538 USR insns 63541 screen 320x256 8 bpp"
+      },
+      "elapsed": 30.040059848004603,
+      "frames": 1503,
+      "fps": 50.03318926809116,
+      "speed_percent": 100.06637853618231
+    }
+  },
+  "block_loop_relative_residency_reduction_percent": 1.9470404984423761,
+  "a440_lander_relative_residency_reduction_percent": 1.0166619598983573
+}

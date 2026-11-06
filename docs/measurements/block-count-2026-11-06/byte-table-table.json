@@ -1,0 +1,7 @@
+{
+  "symbol": "s_count8",
+  "address": "0x4ff44000",
+  "bytes": 256,
+  "section": ".dram1.data",
+  "verified_entries": 256
+}

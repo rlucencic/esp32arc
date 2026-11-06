@@ -1,0 +1,1 @@
+262144 counts agree: all 65536 low-word patterns under four high-word patterns
