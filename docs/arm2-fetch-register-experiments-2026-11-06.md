@@ -1,6 +1,6 @@
 # ARM2 fetch, register-selection and PC/PSR experiments
 
-Date: 2026-11-06. All four candidates below were rejected. The original
+Date: 2026-11-06. All six candidates below were rejected. The original
 core and exact saved baseline firmware were restored after testing.
 
 ## Profile and method
@@ -97,6 +97,36 @@ in a subsequent run. Both state traces have SHA256
 The deterministic host replay also matched. Original core and baseline
 firmware restored; scratch evidence is in `/tmp/acorn-pc-outline-2026-11-06`.
 
+## Isolating PSR-only outlining
+
+Two follow-ups kept data-processing PC writes inline. The first outlined
+only `run_write_psr(c, run, value)`. The second instead outlined
+`write_psr(c, value)`, keeping `run_write_psr` and its execution-state
+refresh inline. Both used `noinline, noclone` and internal code RAM.
+The second form avoids passing the execution-state pointer across a call.
+
+| Build | Combined ARM2 residency samples (%) | Mean (%) | FPS | Interpreter plus helper bytes |
+| --- | --- | ---: | ---: | ---: |
+| Fresh baseline | 68.9, 68.8, 68.8, 68.3, 68.6 | 68.68 | 50.0069 | 43,154 |
+| Shared run_write_psr | 73.8, 73.6, 73.8, 73.4, 73.5 | 73.62 | 50.0327 | 31,040 |
+| Shared inner write_psr | 71.8, 71.8, 71.4, 71.4, 71.2 | 71.52 | 49.9989 | 34,524 |
+
+CPU use includes the outlined helper: 0.4–0.5 percentage points per capture
+for the outer helper, 0.3–0.4 for the inner helper. Residency increased
+7.19% and 4.14% relatively. Both were rejected. The outer variant removes
+12,114 code bytes (30,700-byte main loop plus 340-byte helper); the inner
+variant removes 8,630 (34,288 plus 236). The compiler reduces indirect jump
+sites from 88 to 36 and 35, respectively, so these are not isolated
+measurements of call overhead. Neither smaller layout improves Lander.
+
+Both passed 190 existing checks, 100,000 Unicorn instructions (seed 1),
+the same 40,960 PC/PSR state comparisons and identical deterministic host
+replay described above. Both state traces match SHA256
+`bf7eddb06d216f9d64c2ebb73f64c14852e28759537bdc078ed13b765632d598`.
+The baseline core and exact saved firmware were restored. Scratch evidence
+is in `/tmp/acorn-psr-only-2026-11-06`; no generated files were added to the
+repositories.
+
 ## Replay and restoration
 
 Each candidate preserved the deterministic A3020 host Lander replay:
@@ -110,6 +140,7 @@ The exact saved baseline app SHA256 is
 Restored A3020 Lander measured 49.9949 FPS after the fetch experiment and
 49.9987 FPS after the register experiments. After the PC/PSR experiment,
 restored A3020 Lander measured 50.0323 FPS in the same short timing check.
+After the PSR-only follow-ups, it measured 49.9987 FPS.
 All sessions ended at the
 640×480 desktop with the serial port closed.
 
@@ -119,6 +150,6 @@ repositories under `/tmp/acorn-fetch-pointer-2026-11-06` and
 archives. The measurements needed to assess the conclusions are recorded
 above. No ROMs, disk images, private boot logs or generated builds are added.
 
-Further outlining experiments should isolate PSR updates from PC writes;
-the combined rewrite above regressed. Code-size savings alone do not
-justify retaining a change.
+The combined and isolated outlining experiments all regressed; retain the
+original inline implementation. Code-size savings alone do not justify
+retaining a change.
