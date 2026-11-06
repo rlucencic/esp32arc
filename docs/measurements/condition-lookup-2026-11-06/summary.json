@@ -1,0 +1,23 @@
+{
+  "residency_percent": {
+    "baseline": [
+      68.5,
+      69.2,
+      68.2,
+      68.4,
+      68.9
+    ],
+    "lookup": [
+      69.7,
+      69.1,
+      68.9,
+      69.5,
+      69.0
+    ]
+  },
+  "means": {
+    "baseline": 68.64000000000001,
+    "lookup": 69.24
+  },
+  "relative_increase_percent": 0.8741258741258529
+}

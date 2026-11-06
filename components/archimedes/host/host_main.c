@@ -313,13 +313,14 @@ static const char *const s_mix_names[MIX_KINDS] = {
     "  (of those, setting flags)", "MUL, MLA", "LDR", "STR", "LDRB", "STRB", "LDM", "STM", "B", "BL", "SWI", "other",
 };
 static uint64_t s_mix[MIX_KINDS], s_mix_regs[2], s_mix_total;
-static uint64_t s_mix_plain[2];
+static uint64_t s_mix_plain[2], s_mix_conditions[3];
 static uint64_t s_mix_lists[2][65536];
 
 static void mix_count(const arm2_t *c, uint32_t op)
 {
     s_mix_total++;
     uint32_t cond = op >> 28, f = c->psr >> 28;
+    s_mix_conditions[cond == 14 ? 0 : cond == 15 ? 1 : 2]++;
     bool n = f & 8, z = f & 4, cf = f & 2, v = f & 1, ok;
     switch (cond) {
     case 0x0: ok = z; break;
@@ -401,6 +402,9 @@ static void mix_print(void)
         }
         printf("\n");
     }
+    printf("host: condition fields: AL %llu, NV %llu, checked %llu (%.1f%% of all instructions)\n",
+           (unsigned long long)s_mix_conditions[0], (unsigned long long)s_mix_conditions[1],
+           (unsigned long long)s_mix_conditions[2], 100.0 * (double)s_mix_conditions[2] / (double)s_mix_total);
     for (int load = 0; load < 2; load++) {
         bool shown[65536] = {false};
         printf("host: most frequent %s register lists (executed instructions):\n", load ? "LDM" : "STM");

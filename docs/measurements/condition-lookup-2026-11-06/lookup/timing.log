@@ -1,0 +1,7 @@
+I (46938) emu: 49.0 fps (98% of 50 Hz) frames 1919 PC &00097C4 USR insns 61181 screen 320x256 8 bpp
+I (51940) emu: 50.0 fps (100% of 50 Hz) frames 2170 PC &000A4E8 USR insns 65619 screen 320x256 8 bpp
+I (56941) emu: 50.0 fps (100% of 50 Hz) frames 2420 PC &00090F8 USR insns 52295 screen 320x256 8 bpp
+I (61944) emu: 50.0 fps (100% of 50 Hz) frames 2670 PC &0009FEC USR insns 66030 screen 320x256 8 bpp
+I (66946) emu: 50.0 fps (100% of 50 Hz) frames 2920 PC &00097CC IRQ insns 50662 screen 320x256 8 bpp
+I (71947) emu: 50.0 fps (100% of 50 Hz) frames 3170 PC &000A4C8 USR insns 67073 screen 320x256 8 bpp
+I (76949) emu: 50.0 fps (100% of 50 Hz) frames 3420 PC &00090A8 USR insns 47921 screen 320x256 8 bpp

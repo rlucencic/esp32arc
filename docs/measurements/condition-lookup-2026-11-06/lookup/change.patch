@@ -1,0 +1,102 @@
+diff --git a/components/arm2/arm2.c b/components/arm2/arm2.c
+index 768a1e0..36316d4 100644
+--- a/components/arm2/arm2.c
++++ b/components/arm2/arm2.c
+@@ -33,11 +33,6 @@ typedef struct {
+ /* Bit c of s_pass[f]: condition c passes with N Z C V = f */
+ static uint16_t s_pass[16];
+ 
+-static inline void flags_changed(arm2_t *c)
+-{
+-    c->cond_mask = s_pass[c->psr >> 28];
+-}
+-
+ static inline uint32_t ror32(uint32_t v, unsigned n)
+ {
+     n &= 31;
+@@ -108,7 +103,6 @@ static inline void set_psr(arm2_t *c, uint32_t psr)
+     if ((old ^ psr) & IF) {
+         update_pending(c);
+     }
+-    flags_changed(c);
+ }
+ 
+ /* A write to R15's PSR bits by the program: all of them in a privileged
+@@ -120,7 +114,6 @@ static inline void write_psr(arm2_t *c, uint32_t v)
+         set_psr(c, v);
+     } else {
+         c->psr = (c->psr & ~NZCV) | (v & NZCV);
+-        flags_changed(c);
+     }
+ }
+ 
+@@ -518,7 +511,6 @@ static INLINE void data_processing(arm2_t *c, run_t *run, uint32_t op, uint32_t
+     REG(c, rd) = r;
+     if (s) {
+         c->psr = (c->psr & ~NZCV) | flags;
+-        flags_changed(c);
+     }
+     return;
+ 
+@@ -530,7 +522,6 @@ logical:
+     if (s) {
+         c->psr = (c->psr & ~NZCV) | (r & ARM2_N) | (r ? 0 : ARM2_Z) | (carry ? ARM2_C : 0) |
+                  (c->psr & ARM2_V);
+-        flags_changed(c);
+     }
+     return;
+ 
+@@ -544,7 +535,6 @@ test:
+         run_write_psr(c, run, r);           /* TEQP, TSTP, CMPP, CMNP */
+     } else {
+         c->psr = (c->psr & ~NZCV) | flags;
+-        flags_changed(c);
+     }
+     return;
+ 
+@@ -573,7 +563,6 @@ static INLINE void multiply(arm2_t *c, run_t *run, uint32_t op)
+     }
+     if (op & (1u << 20)) {
+         c->psr = (c->psr & ~(ARM2_N | ARM2_Z)) | (r & ARM2_N) | (r ? 0 : ARM2_Z);
+-        flags_changed(c);
+     }
+ }
+ 
+@@ -990,7 +979,7 @@ void arm2_host_hook(arm2_t *c);         /* host builds: tracing */
+         if (UNLIKELY(op & 0x10)) goto undefined;                                \
+         single_transfer(c, r, op, PC, load, byte, true); NEXT();
+ 
+-#define COND_PASSES()   ((c->cond_mask >> (op >> 28)) & 1)
++#define COND_PASSES()   ((s_pass[c->psr >> 28] >> (op >> 28)) & 1)
+ 
+ int32_t ARM2_HOT arm2_run(arm2_t *c, int32_t ticks)
+ {
+@@ -1011,7 +1000,6 @@ int32_t ARM2_HOT arm2_run(arm2_t *c, int32_t ticks)
+     c->left = ticks;
+     c->run_start = ticks;
+     refresh(c, r);
+-    flags_changed(c);
+     /* The PC's page (valid while its number is c->code_page: the table's
+      * changes and mode switches set that to ~0)
+      */
+@@ -1064,7 +1052,6 @@ debug:
+     c->left = r->left;
+     emudbg_hit(c->dbg, pc);
+     r->left = c->left;
+-    flags_changed(c);
+     pc = c->pc;                             /* the debugger may have moved it */
+     if ((pc >> ARM2_PAGE_SHIFT) != c->code_page && !code_page(c, pc, &code, &code_s)) {
+         r->pc = pc;
+diff --git a/components/arm2/include/arm2.h b/components/arm2/include/arm2.h
+index 908e637..3965bb1 100644
+--- a/components/arm2/include/arm2.h
++++ b/components/arm2/include/arm2.h
+@@ -103,8 +103,6 @@ struct arm2 {
+     uint32_t pc;                    /* the next instruction's address (bits 25-2): between runs
+                                        and for the debugger (arm2_run() keeps it in a register) */
+     uint32_t psr;                   /* N Z C V I F and the mode, in R15's bits */
+-    uint16_t cond_mask;             /* bit c: condition c passes with the flags now (arm2_run()
+-                                       keeps it; changes to psr between runs are seen) */
+     uint32_t usr[7];                /* R8-R14 of the user mode (and IRQ/SVC's R8-R12) */
+     uint32_t fiq[7];                /* R8-R14 of FIQ mode */
+     uint32_t irq[2], svc[2];        /* R13-R14 */
