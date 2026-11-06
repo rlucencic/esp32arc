@@ -27,7 +27,9 @@ static struct {
     int channel;
     int32_t level_l, level_r;           /* the byte playing */
     uint32_t byte_left;                 /* its us left */
-    int64_t acc_l, acc_r;
+    /* |sample| <= 31616, gain <= 256, integration <= SAMPLE_US (32):
+     * |acc| <= 258998272, so signed 32-bit arithmetic is exact. */
+    int32_t acc_l, acc_r;
     uint32_t acc_us;
     uint64_t last;                      /* tick sound ran to */
     uint32_t tick_frac;                 /* ticks short of a us */
@@ -183,8 +185,8 @@ void sound_run(void)
         if (step > SAMPLE_US - snd.acc_us) {
             step = SAMPLE_US - snd.acc_us;
         }
-        snd.acc_l += (int64_t)snd.level_l * step;
-        snd.acc_r += (int64_t)snd.level_r * step;
+        snd.acc_l += snd.level_l * (int32_t)step;
+        snd.acc_r += snd.level_r * (int32_t)step;
         snd.acc_us += step;
         snd.byte_left -= step;
         us -= step;
