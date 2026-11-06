@@ -1,6 +1,6 @@
 # ARM2 fetch, register-selection and PC/PSR experiments
 
-Date: 2026-11-06. All six candidates below were rejected. The original
+Date: 2026-11-06. All seven candidates below were rejected. The original
 core and exact saved baseline firmware were restored after testing.
 
 ## Profile and method
@@ -127,6 +127,38 @@ The baseline core and exact saved firmware were restored. Scratch evidence
 is in `/tmp/acorn-psr-only-2026-11-06`; no generated files were added to the
 repositories.
 
+## Inner PSR helper with more dispatch tails
+
+A further candidate combined the inner `write_psr` helper with GCC
+`optimize("no-crossjumping")` on `arm2_run` only. Other functions retained
+their normal optimization settings. This differs from the earlier
+component-wide compiler experiments: it tests preserved tails together
+with reduced PSR duplication.
+
+P4 disassembly showed 111 indirect jump sites, versus 88 baseline and 35
+for the inner-helper-only build. Counts include `jr`/`jalr` sites, not just
+guest instruction dispatch, and do not measure prediction quality.
+The main loop is 38,912 bytes plus a 236-byte helper: 39,148 total,
+4,006 fewer than baseline.
+
+| Build | Combined ARM2 residency samples (%) | Mean (%) | FPS |
+| --- | --- | ---: | ---: |
+| Fresh baseline | 68.7, 68.1, 68.4, 68.2, 68.7 | 68.42 | 50.0115 |
+| Inner helper, no crossjumping in arm2_run | 73.6, 73.5, 73.4, 72.8, 73.7 | 73.40 | 50.0017 |
+
+Totals include `write_psr` (0.3–0.4 percentage points per candidate capture).
+CPU demand rose 4.98 percentage points (7.28% relatively). Rejected:
+this combination also regresses despite smaller code and more indirect
+jump sites. It does not isolate branch prediction from register allocation,
+call overhead or instruction layout, nor establish that dispatch merging
+caused the prior regressions.
+
+The candidate passed 190 CPU checks, 100,000 Unicorn instructions (seed 1),
+all 40,960 PC/PSR state comparisons and the identical deterministic host
+replay. Reference state SHA256 is unchanged. The baseline core and exact
+saved baseline firmware were restored. Scratch evidence remains outside
+the repositories at `/tmp/acorn-psr-tails-2026-11-06`.
+
 ## Replay and restoration
 
 Each candidate preserved the deterministic A3020 host Lander replay:
@@ -140,7 +172,8 @@ The exact saved baseline app SHA256 is
 Restored A3020 Lander measured 49.9949 FPS after the fetch experiment and
 49.9987 FPS after the register experiments. After the PC/PSR experiment,
 restored A3020 Lander measured 50.0323 FPS in the same short timing check.
-After the PSR-only follow-ups, it measured 49.9987 FPS.
+After the PSR-only follow-ups, it measured 49.9987 FPS; after the
+inner-helper/no-crossjumping combination, 50.0001 FPS.
 All sessions ended at the
 640×480 desktop with the serial port closed.
 
