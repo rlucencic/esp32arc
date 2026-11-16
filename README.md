@@ -151,7 +151,7 @@ speed hasn't been looked at.
 
 ### 1. What you need
 
-- [ESP-IDF](https://github.com/espressif/esp-idf) v5.5 (developed with v5.5.4)
+- [ESP-IDF](https://github.com/espressif/esp-idf) v5.5 (developed with v5.5.6)
 - [esp32emu](https://github.com/rlucencic/esp32emu), checked out next to this project (`../esp32emu`)
 - Images of the OS ROMs, which are copyrighted and **not included**: Arthur
   1.20 and RISC OS 2.00 (512 KB each), RISC OS 3.11 or 3.10 (2 MB), as
