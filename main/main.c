@@ -149,7 +149,7 @@ static bool start(void)
         static const char *const files[] = { "arthur120.rom", "riscos200.rom", "riscos311.rom" };
         snprintf(text, sizeof(text),
                  "No %s ROM: put it in roms/%s and flash with idf.py flash, or copy it into the "
-                 "\"roms\" folder on the SD card.", os_names[settings.os], files[settings.os]);
+                 "\"arc/roms\" folder on the SD card.", os_names[settings.os], files[settings.os]);
         emu_set_message(text);
         return false;
     }
@@ -501,7 +501,7 @@ static bool disc_create(const char *path, uint32_t bytes)
 }
 
 static const disks_config_t disks = {
-    .folder = "floppies",
+    .folder = "arc",
     .extensions = extensions,
     .description = "Disc images (.ADF, .ADL, .IMG; .HDF the A3020's hard disc)",
     .title = "Discs",

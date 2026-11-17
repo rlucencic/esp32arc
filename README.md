@@ -170,8 +170,8 @@ idf.py -B build-tab5 -DIDF_TARGET=esp32p4 -DSDKCONFIG=build-tab5/sdkconfig -p /d
 ```
 
 Later updates only need `app-flash` instead of `flash`. Instead of flashing
-the ROMs, you can also copy them into a `roms` folder on the SD card. The
-Tab5 is the only target: a build for any other stops with a message.
+the ROMs, you can also copy them into the `arc/roms` folder on the SD card.
+The Tab5 is the only target: a build for any other stops with a message.
 
 ### 3. First start
 
@@ -179,8 +179,8 @@ Tab5 is the only target: a build for any other stops with a message.
    network: the clock is set from the internet, and the web page becomes
    reachable.
 2. Open `http://archimedes.local` and drop disc images onto the page, then
-   choose **Insert into… → :0**. (Or copy them into the `floppies` folder
-   of the SD card.)
+   choose **Insert into… → :0**. (Or copy them into the `arc` folder of
+   the SD card.)
 3. Tap **Bluetooth** to pair a keyboard and mouse (optional: the touch
    screen is a touchpad too).
 4. Choose the **Model**, the **System** (OS) and **Memory**, then tap
@@ -209,8 +209,11 @@ Tab5 is the only target: a build for any other stops with a message.
 | Get a command line | F12 in the RISC OS desktop |
 | Reset the CMOS RAM to the OS's defaults | Hold Delete (R on Arthur) on the keyboard while it starts again (setup screen → **Reset**) |
 
-Disc images live in the `floppies` folder on the SD card. The inserted
-discs are remembered across restarts, and so is each OS's CMOS RAM.
+Disc images live in the `arc` folder on the SD card, the Archimedes' own
+(until 2026-11-17 `floppies`, shared with the Atari ST and the Amiga, and
+the ROMs in the card's `roms`: esp32emu's `tools/sd_folders.ps1 E:\` moves
+an older card's files into each machine's folder). The inserted discs are
+remembered across restarts, and so is each OS's CMOS RAM.
 
 **Keyboard**: by position, as on the Archimedes' UK keyboard. Alt is Alt
 (the Windows/⌘ keys too), Ctrl and Shift as themselves on both sides;
@@ -245,7 +248,7 @@ flowchart LR
     BLE[Bluetooth HID · touchpad]
   end
   PSRAM[(PSRAM<br>RAM · ROM)]
-  SD[(microSD<br>floppies/)]
+  SD[(microSD<br>arc/)]
   EMU <--> PSRAM
   PSRAM --> COPY
   COPY --> PRES

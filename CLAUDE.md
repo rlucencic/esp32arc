@@ -41,9 +41,12 @@ bash -c '. $IDF_PATH/export.sh >/dev/null 2>&1; \
   `flash`. NVS (WiFi, BLE pairings) is shared; this project's settings are
   namespace `arc` (`model`, `os`, `ram_kb`, `menu`, `cmos0`-`cmos2`: the
   A440's CMOS RAM for each OS, `cmos5` the A3020's), its drives
-  `arcfloppy` (:0, :1 and the IDE disc).
+  `arcfloppy` (:0, :1 and the IDE disc). On the SD card: `arc/` (the disc
+  images; until 2026-11-17 `floppies/`, shared with the ST and the Amiga),
+  `arc/roms/` (the card's `roms/` then): esp32emu's `tools/sd_folders.ps1`
+  moves an old card's files.
 - `roms/riscos310.rom` is there too (not flashed): `rom_store.c` takes 3.10
-  from the SD card's `roms/` as RISC OS 3 as well.
+  from the SD card's `arc/roms/` as RISC OS 3 as well.
 - `../esp32emu/tools/emu_console.py PORT log N | screenshot F.png | lcd F.png | send "cmd" ... | info | reset | profile ELF [N [TOP]]`
   with the IDF venv's Python (`-I`). `curl http://archimedes.local/api/status`.
 - Flashing restarts the board and ends the user's session: say so first.
@@ -87,7 +90,7 @@ pc,r14`, `90 ]`, `100 CALL c%`, `RUN`; a few lines per `T`), and read
 | Path | What |
 |---|---|
 | `main/main.c` | The Archimedes as an `emu_machine_t`: memory, start, CMOS saving, key map, mouse buttons, the touchpad (pixels to counts as RISC OS 3 moves the pointer), drives, status, console |
-| `main/rom_store.c` | ROMs from their flash partitions, else files in the SD card's `roms/` holding that OS |
+| `main/rom_store.c` | ROMs from their flash partitions, else files in the SD card's `arc/roms/` holding that OS |
 | `main/settings.c` | NVS `arc` |
 | `components/archimedes/` | The machine, platform independent (`include/arc.h`) |
 | `components/archimedes/host/` | Host build for testing on the Mac (see Testing) |
