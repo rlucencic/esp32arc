@@ -526,45 +526,177 @@ static const disks_config_t disks = {
 
 /* ---- Status ---- */
 
+/* The RISC OS modes a display's size and colours are (0-31; 7, teletext,
+ * and the 768 x 288 ones left out)
+ */
+static int riscos_mode(int w, int h, int colours)
+{
+    static const struct { uint16_t w, h, colours; } modes[32] = {
+        { 640, 256, 2 }, { 320, 256, 4 }, { 160, 256, 16 }, { 640, 250, 2 }, { 320, 256, 2 },
+        { 160, 256, 4 }, { 320, 250, 2 }, { 0, 0, 0 }, { 640, 256, 4 }, { 320, 256, 16 },
+        { 160, 256, 256 }, { 640, 250, 4 }, { 640, 256, 16 }, { 320, 256, 256 }, { 640, 250, 16 },
+        { 640, 256, 256 }, { 1056, 256, 16 }, { 1056, 250, 16 }, { 640, 512, 2 }, { 640, 512, 4 },
+        { 640, 512, 16 }, { 640, 512, 256 }, { 0, 0, 0 }, { 1152, 896, 2 }, { 1056, 256, 256 },
+        { 640, 480, 2 }, { 640, 480, 4 }, { 640, 480, 16 }, { 640, 480, 256 }, { 800, 600, 2 },
+        { 800, 600, 4 }, { 800, 600, 16 },
+    };
+    for (int m = 0; m < 32; m++) {
+        if (modes[m].w == w && modes[m].h == h && modes[m].colours == colours) {
+            return m;
+        }
+    }
+    return -1;
+}
+
+/* MHz with its fraction's digits, if any ("8", "25.175") */
+static const char *mhz(char *buf, size_t len, uint32_t khz)
+{
+    if (khz % 1000) {
+        int n = snprintf(buf, len, "%u.%03u", (unsigned)(khz / 1000), (unsigned)(khz % 1000));
+        while (n > 0 && buf[n - 1] == '0') {
+            buf[--n] = '\0';
+        }
+    } else {
+        snprintf(buf, len, "%u", (unsigned)(khz / 1000));
+    }
+    return buf;
+}
+
+/* A register's set bits by name, joined with ", " ("none": no bit) */
+static void bit_names(char *buf, size_t len, uint8_t v, const char *const names[8])
+{
+    size_t n = 0;
+    buf[0] = '\0';
+    for (int b = 0; b < 8 && n < len; b++) {
+        if ((v & (1u << b)) && names[b]) {
+            n += (size_t)snprintf(buf + n, len - n, "%s%s", n ? ", " : "", names[b]);
+        }
+    }
+    if (n == 0) {
+        snprintf(buf, len, "none");
+    }
+}
+
+/* The machine card's rows: the state now (the core's plain copies) */
+static void status_rows(emu_json_t *j)
+{
+    char text[400], a[24];
+    arc_status_t s;
+    arc_get_status(&s);
+    arc_chips_t c;
+    arc_get_chips(&c);
+    bool arm250 = s_cfg.model == ARC_MODEL_A3020;
+    char ram[16];
+    if (s_cfg.ram_size >= 1024 * 1024) {
+        snprintf(ram, sizeof(ram), "%u MB", (unsigned)(s_cfg.ram_size >> 20));
+    } else {
+        snprintf(ram, sizeof(ram), "%u KB", (unsigned)(s_cfg.ram_size >> 10));
+    }
+    snprintf(text, sizeof(text), arm250 ? "Acorn A3020 / A4000: the ARM250 (ARM2, MEMC, VIDC and IOC in one), %s "
+                                          "RAM, the 82C711, the IOEB"
+                                        : "Acorn Archimedes A440: ARM2, %s RAM, MEMC1a, VIDC1a, IOC, WD1772", ram);
+    emu_json_row(j, "System", text);
+    static const char *const cpu_modes[4] = { "USR", "FIQ", "IRQ", "SVC" };
+    snprintf(text, sizeof(text), "%s at %d MHz: %.2f million instructions a second; %s mode now",
+             arm250 ? "ARM250" : "ARM2", arm250 ? 12 : 8, s.insns * (double)ARC_FRAME_HZ / 1e6, cpu_modes[s.psr & 3]);
+    emu_json_row(j, "CPU", text);
+
+    snprintf(text, sizeof(text), "%s, %u %s from %s at &amp;3800000 (%d ns access)%s", s_rom_name ? s_rom_name : "-",
+             (unsigned)(s_cfg.rom_size >= 1024 * 1024 ? s_cfg.rom_size >> 20 : s_cfg.rom_size >> 10),
+             s_cfg.rom_size >= 1024 * 1024 ? "MB" : "KB", rom_store_source() ? rom_store_source() : "-", c.rom_ns,
+             c.rom_at_0 ? "; also at &amp;0000000 (after the reset)" : "");
+    emu_json_row(j, "ROM", text);
+
+    /* Memory: MEMC's pages, its DMA */
+    snprintf(text, sizeof(text), "%s: %d pages of %d KB, %d mapped; OS mode %s; DMA: video %s, sound %s",
+             arm250 ? "MEMC" : "MEMC1a", c.pages, c.page_kb, c.mapped, c.os_mode ? "on" : "off",
+             c.video_dma ? "on" : "off", c.sound_dma ? "on" : "off");
+    emu_json_row(j, "Memory", text);
+    if (settings.os != ARC_OS_ARTHUR && s_cfg.ram_size) {
+        uint32_t free = arc_ram_free();
+        snprintf(text, sizeof(text), "%u KB of %s <span class=\"dim\">(for applications: the Task Manager's Free "
+                 "and Next)</span>", (unsigned)(free >> 10), ram);
+        emu_json_row_bar(j, "Free RAM", text, 100 - (int)((uint64_t)free * 100 / s_cfg.ram_size));
+    }
+
+    /* Screen: the VIDC's display, its pixel rate (the clock / 3, 2, 1.5, 1) */
+    static const uint8_t mul[4] = { 1, 1, 2, 1 }, div[4] = { 3, 2, 3, 1 };
+    int colours = 1 << s.bpp, mode = riscos_mode(s.width, s.height, colours);
+    int n = mode >= 0 ? snprintf(text, sizeof(text), "Like mode %d: ", mode) : 0;
+    n += snprintf(text + n, sizeof(text) - n, "%d × %d, %d colours%s, %d.%02d Hz <span class=\"dim\">(video %d%% "
+                  "of the bus)</span>; pixels at %s MHz; %u KB of screen memory at physical &amp;%07X%s",
+                  s.width, s.height, colours, (c.control & 0x40) ? ", interlaced" : "", s.hz100 / 100, s.hz100 % 100,
+                  s.dma_percent, mhz(a, sizeof(a), c.clock_khz * mul[c.control & 3] / div[c.control & 3]),
+                  (unsigned)((c.vend + 16 - c.vstart) >> 10), (unsigned)(0x2000000 + c.vstart),
+                  c.pointer ? "; the pointer on" : "");
+    emu_json_row(j, "Screen", text);
+
+    /* Palette: the 16 registers, then the border (bits B 11-8, G 7-4, R
+     * 3-0); compact swatches: the reply has 4 KB (esp32emu's STATUS_SIZE)
+     */
+    static char swatches[720];
+    size_t len = (size_t)snprintf(swatches, sizeof(swatches), "16 of 4096 colours: ");
+    for (int i = 0; i <= 16 && len < sizeof(swatches); i++) {
+        uint16_t v = i < 16 ? c.palette[i] : c.border;
+        len += (size_t)snprintf(swatches + len, sizeof(swatches) - len,
+                                "%s<b style=background:#%x%x%x>\u00a0\u00a0\u00a0</b>", i == 16 ? "; border " :
+                                i ? " " : "", (unsigned)(v & 15), (unsigned)((v >> 4) & 15), (unsigned)((v >> 8) & 15));
+    }
+    emu_json_row(j, "Palette", swatches);
+
+    /* Sound: MEMC's DMA, the VIDC's rate and stereo images */
+    if (c.sound_dma) {
+        n = snprintf(text, sizeof(text), "On: %u bytes a second (SFR %u)", (unsigned)(1000000 / c.sound_us),
+                     (unsigned)(c.sound_us - 2));
+        if (c.sendn >= c.sstart) {
+            n += snprintf(text + n, sizeof(text) - n, ", buffers of %u bytes", (unsigned)(c.sendn + 16 - c.sstart));
+        }
+        n += snprintf(text + n, sizeof(text) - n, "; stereo images");
+        for (int ch = 0; ch < 8 && n < (int)sizeof(text); ch++) {
+            n += snprintf(text + n, sizeof(text) - n, " %u", c.stereo[ch]);
+        }
+        if (n < (int)sizeof(text)) {
+            snprintf(text + n, sizeof(text) - n, " (1 left, 4 centre, 7 right)");
+        }
+    } else {
+        snprintf(text, sizeof(text), "Off (MEMC's sound DMA)");
+    }
+    emu_json_row(j, "Sound", text);
+
+    snprintf(text, sizeof(text), "By position (UK); Windows keys Alt, End Copy, Pause Break; Caps Lock %s, "
+             "Num Lock %s; Menu: the mouse's %s button", (c.leds & 1) ? "on" : "off", (c.leds & 2) ? "on" : "off",
+             settings.menu_middle ? "middle" : "right");
+    emu_json_row(j, "Keyboard", text);
+
+    /* Interrupts: the IOC's masks (A latched, B levels, FIQ), timer 0 */
+    /* (the A3020's floppy index on IRQ A 2, its IDE on IRQ B 3) */
+    const char *const irqa[8] = { "printer busy", "ring", arm250 ? "floppy index" : "printer ack", "flyback",
+                                  "power-on", "timer 0", "timer 1", NULL };
+    const char *const irqb[8] = { "podule FIQ", "sound", "serial", arm250 ? "IDE" : "hard disc", "disc changed",
+                                  "podule", "keyboard out", "keyboard in" };
+    static const char *const fiq[8] = { "floppy data", "floppy", "Econet", NULL, NULL, NULL, "podule", NULL };
+    char na[96], nb[120], nf[48];
+    bit_names(na, sizeof(na), c.irqa_mask, irqa);
+    bit_names(nb, sizeof(nb), c.irqb_mask, irqb);
+    bit_names(nf, sizeof(nf), c.fiq_mask, fiq);
+    n = snprintf(text, sizeof(text), "IRQ A: %s; IRQ B: %s; FIQ: %s", na, nb, nf);
+    if (c.timer_latch[0]) {
+        uint32_t period = c.timer_latch[0] + 1u;
+        snprintf(text + n, sizeof(text) - n, "; timer 0 at %u Hz", (unsigned)((2000000u + period / 2) / period));
+    }
+    emu_json_row(j, "Interrupts", text);
+
+    emu_json_row(j, "Discs", arm250 ? "The 82C711: two drives (ADFS D, E, F; L, DOS 720 KB and 1.44 MB); IDE: "
+                                      "the hard disc (.hdf)"
+                                    : "The WD1772: two drives (ADFS D and E 800 KB, L 640 KB, DOS 720 KB); no hard "
+                                      "disc");
+}
+
 static void status(emu_json_t *j, int section)
 {
     char text[160];
     if (section == EMU_STATUS_ROWS) {
-        arc_status_t s;
-        arc_get_status(&s);
-        bool arm250 = s_cfg.model == ARC_MODEL_A3020;
-        const char *model = arm250 ? "Acorn A3020 / A4000" : "Acorn Archimedes A440";
-        if (s_cfg.ram_size >= 1024 * 1024) {
-            snprintf(text, sizeof(text), "%s, %u MB", model, (unsigned)(s_cfg.ram_size >> 20));
-        } else {
-            snprintf(text, sizeof(text), "%s, %u KB", model, (unsigned)(s_cfg.ram_size >> 10));
-        }
-        emu_json_row(j, "System", text);
-        emu_json_row(j, "ROM", s_rom_name ? s_rom_name : "-");
-        snprintf(text, sizeof(text), "%s <span class=\"dim\">(%.2f million instructions a second)</span>",
-                 arm250 ? "ARM250 at 12 MHz" : "ARM2 at 8 MHz", s.insns * (double)ARC_FRAME_HZ / 1e6);
-        emu_json_row(j, "CPU", text);
-        snprintf(text, sizeof(text), "%d × %d, %d colours, %d.%02d Hz <span class=\"dim\">(video %d%% of the bus)</span>",
-                 s.width, s.height, 1 << s.bpp, s.hz100 / 100, s.hz100 % 100, s.dma_percent);
-        emu_json_row(j, "Screen", text);
-        if (settings.os != ARC_OS_ARTHUR && s_cfg.ram_size) {
-            uint32_t free = arc_ram_free();
-            char total[16];
-            if (s_cfg.ram_size >= 1024 * 1024) {
-                snprintf(total, sizeof(total), "%u MB", (unsigned)(s_cfg.ram_size >> 20));
-            } else {
-                snprintf(total, sizeof(total), "%u KB", (unsigned)(s_cfg.ram_size >> 10));
-            }
-            snprintf(text, sizeof(text), "%u KB of %s <span class=\"dim\">(for applications: the Task "
-                     "Manager's Free and Next)</span>", (unsigned)(free >> 10), total);
-            emu_json_row_bar(j, "Free RAM", text, 100 - (int)((uint64_t)free * 100 / s_cfg.ram_size));
-        }
-        if (s.sound_on) {
-            snprintf(text, sizeof(text), "on, %u bytes a second", (unsigned)s.sample_rate);
-        } else {
-            snprintf(text, sizeof(text), "off");
-        }
-        emu_json_row(j, "Sound", text);
+        status_rows(j);
         return;
     }
     arc_floppy_status_t fs;

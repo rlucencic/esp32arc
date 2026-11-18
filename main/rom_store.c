@@ -16,6 +16,7 @@ static const char *const partitions[] = { "rom_arthur120", "rom_riscos200", "rom
 static const uint32_t sizes[] = { 512 * 1024, 512 * 1024, 2 * 1024 * 1024 };
 
 static char s_name[64];
+static const char *s_source;            /* where the last ROM came from */
 
 static bool is_os(arc_os_t os, const uint8_t *buf)
 {
@@ -82,10 +83,19 @@ bool rom_store_load(arc_os_t os, uint8_t *buf, uint32_t *size, const char **name
         return false;
     }
     /* the card's overrides the built-in one */
-    if (!from_sd(os, buf) && !from_partition(os, buf)) {
+    if (from_sd(os, buf)) {
+        s_source = "the SD card";
+    } else if (from_partition(os, buf)) {
+        s_source = "the flash";
+    } else {
         return false;
     }
     *size = sizes[os];
     *name = s_name;
     return true;
+}
+
+const char *rom_store_source(void)
+{
+    return s_source;
 }

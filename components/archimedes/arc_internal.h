@@ -152,6 +152,7 @@ void keyboard_from_host(uint8_t byte);  /* the IOC sent it */
 bool keyboard_typing(void);             /* text from arc_type() still going in */
 extern bool arc_kb_log;                 /* host builds: log the serial link */
 uint64_t keyboard_next_event(void);
+uint8_t keyboard_leds(void);            /* the LEDs the host last set: bit 0 Caps, 1 Num, 2 Scroll Lock */
 void keyboard_event(void);
 
 /* ---- cmos.c: the PCF8583 on the IOC's I2C lines ---- */
@@ -193,6 +194,7 @@ bool vidc_hsync(void);                  /* in the horizontal sync pulse now */
 void vidc_line_end(void);               /* the raster's line is over */
 void vidc_dma_changed(void);            /* MEMC's video registers changed */
 bool vidc_pointer(int *x, int *y);      /* the hardware pointer on the picture */
+bool vidc_pointer_shown(void);          /* in the last snapshot (no RAM read) */
 
 /* ---- sound.c: the VIDC's sound and MEMC's sound DMA ---- */
 
@@ -201,6 +203,7 @@ void sound_write_sfr(uint32_t value);
 void sound_write_stereo(int channel, uint32_t value);
 void sound_run(void);                   /* up to now */
 uint32_t sound_byte_rate(void);
+void sound_status(uint32_t *period_us, uint8_t image[8]);  /* (the web page's) */
 extern bool arc_sound_log;              /* host builds: log the sound bytes */
 void arc_sound_log_frame(void);
 

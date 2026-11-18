@@ -43,6 +43,7 @@ static struct {
     uint64_t rx_due;                    /* the byte reaches the IOC, NEVER */
     uint64_t poll_due;
     uint8_t down[16];                   /* keys the host was told are down */
+    uint8_t leds;                       /* the LEDs command's bits (00-07) */
 } kb;
 
 /* ---- The host's side (other tasks) ---- */
@@ -216,6 +217,9 @@ void keyboard_from_host(uint8_t v)
     if (arc_kb_log) {
         ARC_LOG("KB <- %02X at %u ms, state %d", v, (unsigned)(arc_now() / 8000), kb.state);
     }
+    if (v <= 0x07) {
+        kb.leds = v;                    /* (nothing else to do: no LEDs here) */
+    }
     if (v == HRST) {
         memset(kb.down, 0, sizeof(kb.down));
         kb.keys_on = kb.mouse_on = false;
@@ -251,6 +255,11 @@ void keyboard_from_host(uint8_t v)
         }
         break;
     }
+}
+
+uint8_t keyboard_leds(void)
+{
+    return kb.leds;
 }
 
 static int clamp63(int v)

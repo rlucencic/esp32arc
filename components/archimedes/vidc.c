@@ -434,6 +434,11 @@ bool vidc_hsync(void)
 /* Where the pointer points: its shape's first pixel from the top left (the
  * arrow's tip; RISC OS keeps it some columns into the 32)
  */
+bool vidc_pointer_shown(void)
+{
+    return s_now.valid && s_now.pointer;
+}
+
 bool vidc_pointer(int *x, int *y)
 {
     const picture_t *p = &s_now;

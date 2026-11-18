@@ -352,6 +352,49 @@ void arc_get_status(arc_status_t *s)
     s->dma_percent = line ? (int)(vidc.dma_ticks * 100 / line) : 0;
 }
 
+void arc_get_chips(arc_chips_t *c)
+{
+    memset(c, 0, sizeof(*c));
+    static const uint16_t rom_ns[4] = { 450, 325, 200, 200 };
+    c->page_kb = 4 << memc.psize;
+    c->pages = (int)(arc.cfg.ram_size / ((uint32_t)ARM2_PAGE_SIZE << memc.psize));
+    for (int p = 0; p < c->pages && p < 128; p++) {
+        c->mapped += memc.phys_to_log[p] >= 0;
+    }
+    c->os_mode = memc.os_mode;
+    c->video_dma = memc.video_dma;
+    c->sound_dma = memc.sound_dma;
+    c->rom_at_0 = memc.rom_latch;
+    c->rom_ns = rom_ns[(memc.control >> 6) & 3];
+    c->vinit = memc.vinit;
+    c->vstart = memc.vstart;
+    c->vend = memc.vend;
+    c->cinit = memc.cinit;
+    c->sstart = memc.sstart;
+    c->sendn = memc.sendn;
+    for (int i = 0; i < 16; i++) {
+        c->palette[i] = (uint16_t)(vidc.reg[i] & 0x1FFF);
+    }
+    c->border = (uint16_t)(vidc.reg[0x40 >> 2] & 0x1FFF);
+    for (int i = 0; i < 3; i++) {
+        c->pointer_colour[i] = (uint16_t)(vidc.reg[(0x44 >> 2) + i] & 0x1FFF);
+    }
+    c->control = vidc.reg[0xE0 >> 2];
+    c->clock_khz = vidc.clock_khz;
+    c->pointer = vidc_pointer_shown();
+    sound_status(&c->sound_us, c->stereo);
+    c->irqa = ioc.irqa | IRQA_FORCE;
+    c->irqa_mask = ioc.irqa_mask;
+    c->irqb = ioc.irqb;
+    c->irqb_mask = ioc.irqb_mask;
+    c->fiq = ioc.fiq | FIQ_FORCE;
+    c->fiq_mask = ioc.fiq_mask;
+    for (int i = 0; i < 4; i++) {
+        c->timer_latch[i] = ioc.timer[i].latch;
+    }
+    c->leds = keyboard_leds();
+}
+
 uint32_t arc_peek32(uint32_t addr)
 {
     return arm2_peek32(&arc.cpu, addr);

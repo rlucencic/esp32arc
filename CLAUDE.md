@@ -50,6 +50,14 @@ bash -c '. $IDF_PATH/export.sh >/dev/null 2>&1; \
   in the SD card's `arc/roms/` as RISC OS 3 as well (over the flashed one).
 - `../esp32emu/tools/emu_console.py PORT log N | screenshot F.png | lcd F.png | send "cmd" ... | info | reset | profile ELF [N [TOP]]`
   with the IDF venv's Python (`-I`). `curl http://archimedes.local/api/status`.
+  The web page's machine card (`status_rows()` in `main.c`, the core's
+  read-only `arc_get_chips()`): System, CPU (MIPS, the mode), ROM (where
+  from, its access time, at 0 after a reset), Memory (MEMC's pages, OS
+  mode, DMA), Free RAM, Screen (like which RISC OS mode, rate, pixel
+  clock, screen memory, the pointer), Palette (the 16 registers and the
+  border as swatches), Sound (rate, SFR, buffers, stereo images),
+  Keyboard (the LEDs RISC OS set, the Menu button), Interrupts (the IOC's
+  masks, timer 0), Discs. Rows ~1.6 KB (the reply has 4096 bytes).
 - Flashing restarts the board and ends the user's session: say so first.
 
 Console commands: the shared ones (`emu/console.h`) and the Archimedes'

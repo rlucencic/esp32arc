@@ -163,6 +163,36 @@ typedef struct {
 
 void arc_get_status(arc_status_t *status);
 
+/* The web page's machine card: the chips' state now, plain copies (read
+ * from another task while the machine runs: now and then a moment's mix;
+ * nothing here changes the machine)
+ */
+typedef struct {
+    /* MEMC */
+    int page_kb;                        /* 4, 8, 16, 32 */
+    int pages, mapped;                  /* physical pages, those the CAM maps */
+    bool os_mode, video_dma, sound_dma;
+    bool rom_at_0;                      /* after a reset, until RAM or the CAM is used */
+    int rom_ns;                         /* the ROM's access time: 450, 325, 200 */
+    uint32_t vinit, vstart, vend, cinit;    /* physical addresses */
+    uint32_t sstart, sendn;             /* the next sound buffer (Sstart, SendN) */
+    /* VIDC */
+    uint16_t palette[16];               /* bit 12 supremacy, B 11-8, G 7-4, R 3-0 */
+    uint16_t border, pointer_colour[3];
+    uint32_t control;                   /* register E0: pixel rate, bits a pixel, interlace */
+    uint32_t clock_khz;                 /* its clock (the A3020's IOEB picks it) */
+    bool pointer;                       /* the pointer shown */
+    uint32_t sound_us;                  /* a sound byte's time: SFR + 2 */
+    uint8_t stereo[8];                  /* the stereo images (1 left, 4 centre, 7 right) */
+    /* IOC */
+    uint8_t irqa, irqa_mask, irqb, irqb_mask, fiq, fiq_mask;
+    uint16_t timer_latch[4];
+    /* the keyboard */
+    uint8_t leds;                       /* bit 0 Caps Lock, 1 Num Lock, 2 Scroll Lock */
+} arc_chips_t;
+
+void arc_get_chips(arc_chips_t *chips);
+
 /* Memory free for applications, bytes: the application space pages no
  * task has (RISC OS 2 and 3 keep them at protection level 2: the Task
  * Manager's Free and Next together). Arthur gives all of it to the one

@@ -22,6 +22,7 @@
 static struct {
     uint32_t period;                    /* us a byte */
     int16_t gain_l[8], gain_r[8];       /* of 256 */
+    uint8_t image[8];                   /* the stereo image registers' values */
     uint8_t fifo[16];
     int fifo_pos;                       /* 16: empty */
     int channel;
@@ -48,6 +49,7 @@ static void set_stereo(int ch, uint32_t image)
     /* the left side's share of 18 stereo clocks; 4 centre, 1 left, 7 right */
     static const uint8_t left[8] = { 9, 18, 15, 12, 9, 6, 3, 0 };
     int l = left[image & 7];
+    snd.image[ch] = (uint8_t)(image & 7);
     snd.gain_l[ch] = (int16_t)(l * 256 / 18);
     snd.gain_r[ch] = (int16_t)((18 - l) * 256 / 18);
 }
@@ -95,6 +97,12 @@ void arc_sound_log_frame(void)
                 snd.gain_l[3], snd.gain_l[4], snd.gain_l[5], snd.gain_l[6], snd.gain_l[7]);
     }
     s_log_bytes = s_log_loud = 0;
+}
+
+void sound_status(uint32_t *period_us, uint8_t image[8])
+{
+    *period_us = snd.period;
+    memcpy(image, snd.image, 8);
 }
 
 uint32_t sound_byte_rate(void)

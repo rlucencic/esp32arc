@@ -14,3 +14,5 @@
  * 1992)") in *name.
  */
 bool rom_store_load(arc_os_t os, uint8_t *buf, uint32_t *size, const char **name);
+/* Where the last one loaded came from: "the flash", "the SD card" (NULL: none yet) */
+const char *rom_store_source(void);
