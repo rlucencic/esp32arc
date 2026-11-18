@@ -148,8 +148,8 @@ static bool start(void)
         static char text[200];
         static const char *const files[] = { "arthur120.rom", "riscos200.rom", "riscos311.rom" };
         snprintf(text, sizeof(text),
-                 "No %s ROM: put it in roms/%s and flash with idf.py flash, or copy it into the "
-                 "\"arc/roms\" folder on the SD card.", os_names[settings.os], files[settings.os]);
+                 "No %s ROM: put it in roms/%s and flash with idf.py flash.", os_names[settings.os],
+                 files[settings.os]);
         emu_set_message(text);
         return false;
     }

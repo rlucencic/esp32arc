@@ -81,7 +81,8 @@ bool rom_store_load(arc_os_t os, uint8_t *buf, uint32_t *size, const char **name
     if ((unsigned)os > ARC_OS_RISCOS3) {
         return false;
     }
-    if (!from_partition(os, buf) && !from_sd(os, buf)) {
+    /* the card's overrides the built-in one */
+    if (!from_sd(os, buf) && !from_partition(os, buf)) {
         return false;
     }
     *size = sizes[os];

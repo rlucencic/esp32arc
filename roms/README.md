@@ -13,6 +13,6 @@ its size:
 `idf.py flash` writes them to the `rom_arthur120`, `rom_riscos200` and
 `rom_riscos311` flash partitions.
 
-Without flashing, the emulator also finds them in the `arc/roms` folder on
-the SD card, under any file name (an Arthur image with one byte too many,
-as some are, is fine).
+A ROM in the `arc/roms` folder on the SD card, under any file name, is used
+instead of the flashed one of the OS it holds (an Arthur image with one
+byte too many, as some are, is fine).
